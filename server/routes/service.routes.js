@@ -6,17 +6,17 @@ const {
     getServiceById,
     updateService,
     deleteService
-} = require('../controllers/service.controller')
-
+} = require('../controllers/service.controller');
+const { protect } = require('../middleware/auth.middleware');
+const { admin } = require('../middleware/admin.middleware');
 
 router.route('/')
-.get(getAllServices)
-.post(createService)
-
+    .get(getAllServices)
+    .post(protect, admin, createService);
 
 router.route('/:id')
-.get(getServiceById)
-.put(updateService)
-.delete(deleteService)
+    .get(getServiceById)
+    .put(protect, admin, updateService)
+    .delete(protect, admin, deleteService);
 
 module.exports = router

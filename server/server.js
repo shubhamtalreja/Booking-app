@@ -5,6 +5,7 @@ const app = express();
 const cors = require('cors');
 const healthRoute  = require('./routes/health.routes');
 const serviceRoute = require('./routes/service.routes')
+const authRoute = require('./routes/auth.routes');
 
 
 dbConnection();
@@ -18,6 +19,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api/health',healthRoute);
 app.use('/api/services',serviceRoute);
+app.use('/api/auth',authRoute);
 
 app.listen(PORT, ()=>{
     console.log("Successfully listening on PORT: ",PORT);
