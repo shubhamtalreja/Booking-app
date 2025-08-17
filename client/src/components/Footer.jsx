@@ -1,9 +1,8 @@
 import React from 'react';
-import './Footer.css'; // Import styles for the footer
+import './Footer.css';
 
 const Footer = () => {
   return (
-    // Use the <footer> semantic HTML tag
     <footer className="footer">
       <div className="footer-container">
         <p className="footer-text">

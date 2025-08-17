@@ -1,10 +1,10 @@
 import React from 'react';
+import RegisterForm from '../components/RegisterForm';
 
 const RegisterPage = () => {
   return (
     <div>
-      <h2>Create a New Account</h2>
-      <p>The registration form will be placed here.</p>
+      <RegisterForm />
     </div>
   );
 };

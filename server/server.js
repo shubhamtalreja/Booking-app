@@ -4,8 +4,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const healthRoute  = require('./routes/health.routes');
-const serviceRoute = require('./routes/service.routes')
-const authRoute = require('./routes/auth.routes');
+const serviceRoutes = require('./routes/service.routes')
+const authRoutes = require('./routes/auth.routes');
+const availabilityRoutes = require('./routes/availability.route');
 
 
 dbConnection();
@@ -18,8 +19,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api/health',healthRoute);
-app.use('/api/services',serviceRoute);
-app.use('/api/auth',authRoute);
+app.use('/api/services',serviceRoutes);
+app.use('/api/auth',authRoutes);
+app.use('/api/availability', availabilityRoutes);
 
 app.listen(PORT, ()=>{
     console.log("Successfully listening on PORT: ",PORT);
