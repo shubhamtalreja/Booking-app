@@ -7,10 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* NEW: Add padding to the main content area */
 .main-content {
-  /* This ensures the content doesn't sit right at the top/bottom edges */
-  /* and gives it room to breathe between the Navbar and Footer. */
   padding: 20px;
-  min-height: calc(100vh - 80px - 106px); /* Full height minus navbar and footer height */
+  min-height: calc(100vh - 80px - 106px); 
 }
