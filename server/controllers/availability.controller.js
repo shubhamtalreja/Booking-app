@@ -21,8 +21,7 @@ const {
  * @access  Public
  */
 exports.getAvailability = async (req, res) => {
-  // We'll define a standard interval for our slots, e.g., every 15 minutes.
-  // This provides flexibility, allowing a 45-min service to start at 9:00, 9:15, 9:30 etc.
+
   const SLOT_INTERVAL = 15;
 
   try {

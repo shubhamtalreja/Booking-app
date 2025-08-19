@@ -1,7 +1,19 @@
 const Appointment = require('../models/appointment.model');
 const Service = require('../models/service.model');
 const Availability = require('../models/availability.model');
-const { parseISO, addMinutes } = require('date-fns');
+const {
+    parseISO,
+    startOfDay,
+    endOfDay,
+    setHours,
+    setMinutes,
+    setSeconds,
+    setMilliseconds,
+    addMinutes,
+    isBefore,
+    isAfter,
+    getDay
+} = require('date-fns');
 const { default: mongoose } = require('mongoose');
 
 
@@ -89,7 +101,7 @@ exports.createAppointment = async (req, res) => {
             service: serviceId,
             startTime: proposedStartTime,
             endTime: proposedEndTime,
-            status: 'confirmed'
+            status: 'confirmed',
         });
 
 
@@ -124,9 +136,15 @@ exports.createAppointment = async (req, res) => {
 // @access  Private
 exports.getMyAppointments = async (req, res) => {
     try {
+        const appointments = await Appointment.find({client: req.user.id})
+        .populate('service')
+        .sort({startTime: -1});
+
         res.status(200).json({
             success: true,
-            message: 'getMyAppointments controller is working. Logic to be implemented.'
+            count: appointments.length,
+            data: appointments,
+
         });
     } catch (error) {
         console.error('Error fetching user appointments:', error);
@@ -139,6 +157,17 @@ exports.getMyAppointments = async (req, res) => {
 // @access  Private/Admin
 exports.getAllAppointments = async (req, res) => {
     try {
+         const appointments = await Appointment.find({})
+        .populate('service')
+        .populate('client', 'name email')
+        .sort({startTime: -1});
+
+        res.status(200).json({
+            success: true,
+            count: appointments.length,
+            data: appointments,
+
+        });
         res.status(200).json({
             success: true,
             message: 'getAllAppointments controller is working. Logic to be implemented.'
