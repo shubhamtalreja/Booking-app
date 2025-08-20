@@ -2,26 +2,56 @@ import React from 'react';
 import ServiceList from '../components/ServiceList';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { getAvailability } from '../services/availability.service';
+import { getAvailability, getAvailabilityConfig } from '../services/availability.service';
 import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
+import { useCallback } from 'react';
+import { isBefore, startOfDay } from 'date-fns';
+import ConfirmationModal from '../components/ConfirmationModal';
+
 
 const BookingPage = () => {
-  const [selectedService, setSelectedService] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+
+  const [selection, setSelection] = useState({
+    service: null,
+    date: null,
+    time: null
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [slotError, setSlotError] = useState(null);
 
+  const [availableConfig, setAvailableConfig] = useState([]);
+  const [isConfigLoading, setIsConfigLoading] = useState(false);
+  const [configError, setConfigError] = useState(null);
+
 
   useEffect(() => {
-    if (!selectedDate || !selectedService) {
+    const fetchAvailabilityConfig = async () => {
+      setIsConfigLoading(true);
+      setConfigError(null);
+      try {
+        const config = await getAvailabilityConfig();
+        setAvailableConfig(config);
+      } catch (error) {
+        setConfigError(error.message);
+      } finally {
+        setIsConfigLoading(false);
+      }
+    }
+    fetchAvailabilityConfig();
+  }, []);
+
+  useEffect(() => {
+    if (!selection.date || !selection.service) {
       return;
     }
     const fetchAvailableSlots = async () => {
       setLoadingSlots(true);
       setSlotError(null);
       try {
-        const slots = await getAvailability(selectedService._id, selectedDate);
+        const slots = await getAvailability(selection.service._id, selection.date);
         setAvailableSlots(slots);
       } catch (error) {
         setSlotError(error.message);
@@ -31,33 +61,97 @@ const BookingPage = () => {
       }
     }
     fetchAvailableSlots();
-  },[ selectedService, selectedDate])
-  const handleServiceSelect = (service) => {
-    setSelectedService(service);
-    setSelectedDate(null);
-    setAvailableSlots([]);
-    console.log('Selected service:', service);
+  }, [selection.service, selection.date]);
+
+  const isDayDisabled = useCallback((day) => {
+    if (!availableConfig) return false;
+
+    // 1. Disable dates in the past.
+    if (isBefore(day, startOfDay(new Date()))) {
+      return true;
+    }
+
+    const dayOfWeekIndex = day.getDay(); // 0 for Sunday, 1 for Monday, etc.
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayOfWeekName = days[dayOfWeekIndex];
+
+    // 2. Disable days based on the weekly schedule.
+    const daySchedule = availableConfig.weeklyAvailability.find(
+      (d) => d.dayOfWeek === dayOfWeekName
+    );
+    if (!daySchedule || !daySchedule.isAvailable) {
+      return true;
+    }
+
+    const isHoliday = availableConfig.nonWorkingDays.some(
+      (holiday) => startOfDay(new Date(holiday)).getTime() === startOfDay(day).getTime()
+    );
+    if (isHoliday) {
+      return true;
+    }
+
+    return false;
+
+  }, [availableConfig]);
+
+  const handleDateSelect = (date) => {
+    if (date) {
+      setSelection(prev => ({
+        ...prev,
+        date: date,
+        time: null
+      }));
+      setAvailableSlots([]);
+    }
   }
+
+
+  const handleServiceSelect = (service) => {
+    setSelection({
+      service: service,
+      date: null,
+      time: null
+    })
+    setAvailableSlots([]);
+  }
+
+  const handleTimeSelect = (time) => {
+    setSelection(prev => ({
+      ...prev,
+      time: time
+    }));
+  }
+
+  const handleBookingConfirm = () => {
+    console.log('Booking Confirmed!', selection);
+
+    setIsModalOpen(false);
+  };
+
+  if (isConfigLoading) return <p>Loading schedule...</p>;
+  if (configError) return <p style={{ color: 'red' }}>{configError}</p>;
   return (
     <div>
       <h2>Book Your Appointment</h2>
       <p>Here clients will be able to select a service and book a time slot.</p>
       <ServiceList
         onServiceSelect={handleServiceSelect}
-        selectedService={selectedService} />
+        selectedService={selection.service} />
 
 
-      {selectedService && (
+      {selection.service && (
         <div style={{ marginTop: '20px' }}>
-          <h3>Select a Date for {selectedService.name}</h3>
+          <h3>Select a Date for {selection.service.name}</h3>
           <DayPicker
             mode="single"
-            selected={selectedDate}
-            onSelect={setSelectedDate}
+            selected={selection.date}
+            onSelect={handleDateSelect}
+            disabled={isDayDisabled}
+            footer={selection.date ? `You selected ${selection.date.toLocaleDateString()}.` : 'Please select a day.'}
           />
         </div>
       )}
-      {selectedDate && (
+      {selection.date && (
         <div style={{ marginTop: '20px' }}>
           <h3>Step 3: Select a Time</h3>
           {loadingSlots && <p>Loading available times...</p>}
@@ -66,17 +160,63 @@ const BookingPage = () => {
           {!loadingSlots && !slotError && (
             <div>
               {availableSlots.length > 0 ? (
-                availableSlots.map((slot) => (
-                  <button key={slot} style={{ margin: '5px' }}>
-                    {slot}
-                  </button>
-                ))
+                availableSlots.map((slot) => {
+                  // Determine if this is the currently selected button.
+                  const isSelected = selection.time === slot;
+
+                  return (
+                    <button
+                      key={slot}
+                      onClick={() => handleTimeSelect(slot)}
+                      style={{
+                        margin: '5px',
+                        padding: '10px 15px',
+                        fontSize: '1em',
+                        cursor: 'pointer',
+                        backgroundColor: isSelected ? '#007bff' : '#f8f9fa',
+                        color: isSelected ? 'white' : 'black',
+                        border: isSelected ? '1px solid #0056b3' : '1px solid #ccc',
+                        borderRadius: '5px',
+                        transition: 'background-color 0.2s, color 0.2s',
+                      }}
+                    >
+                      {slot}
+                    </button>
+                  );
+                })
               ) : (
                 <p>No available slots for this day. Please select another date.</p>
               )}
             </div>
           )}
-        </div> )}
+        </div>)}
+
+      {selection.service && selection.date && selection.time && (
+        <div style={{ marginTop: '30px', textAlign: 'center' }}>
+          <button
+            style={{
+              padding: '12px 25px',
+              fontSize: '1.2em',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+            // Clicking this button opens the confirmation modal.
+            onClick={() => setIsModalOpen(true)}
+          >
+            Book Now
+          </button>
+        </div>
+      )}
+
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleBookingConfirm}
+        selection={selection}
+      />
 
     </div>
   );
