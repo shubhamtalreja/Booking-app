@@ -1,16 +1,16 @@
 const Availability = require('../models/availability.model');
 const Appointment = require('../models/appointment.model');
 const Service = require('../models/service.model');
-const { 
-  parseISO, 
-  startOfDay, 
-  endOfDay, 
-  setHours, 
-  setMinutes, 
-  setSeconds, 
+const {
+  parseISO,
+  startOfDay,
+  endOfDay,
+  setHours,
+  setMinutes,
+  setSeconds,
   setMilliseconds,
-  addMinutes, 
-  isBefore, 
+  addMinutes,
+  isBefore,
   format,
   getDay
 } = require('date-fns');
@@ -21,9 +21,8 @@ const {
  * @access  Public
  */
 exports.getAvailability = async (req, res) => {
-  // We'll define a standard interval for our slots, e.g., every 15 minutes.
-  // This provides flexibility, allowing a 45-min service to start at 9:00, 9:15, 9:30 etc.
-  const SLOT_INTERVAL = 15; 
+
+  const SLOT_INTERVAL = 15;
 
   try {
     const { date, serviceId } = req.query;
@@ -75,7 +74,7 @@ exports.getAvailability = async (req, res) => {
 
     // Check if the business is closed on this day of the week or if it's a holiday.
     const isNonWorkingDay = availability.nonWorkingDays.some(
-        (holiday) => startOfDay(new Date(holiday)).getTime() === startOfDay(targetDate).getTime()
+      (holiday) => startOfDay(new Date(holiday)).getTime() === startOfDay(targetDate).getTime()
     );
 
     if (!daySchedule || !daySchedule.isAvailable || isNonWorkingDay) {
@@ -85,14 +84,14 @@ exports.getAvailability = async (req, res) => {
 
     // --- 4. Generate Potential Slots for the Working Day ---
     const availableSlots = [];
-    
+
     // Create Date objects for the start and end of the working day.
     const [startHour, startMinute] = daySchedule.startTime.split(':').map(Number);
     const [endHour, endMinute] = daySchedule.endTime.split(':').map(Number);
-    
+
     let workingDayStart = setMilliseconds(setSeconds(setMinutes(setHours(targetDate, startHour), startMinute), 0), 0);
     let workingDayEnd = setMilliseconds(setSeconds(setMinutes(setHours(targetDate, endHour), endMinute), 0), 0);
-    
+
     let potentialSlotStart = workingDayStart;
 
     while (isBefore(addMinutes(potentialSlotStart, serviceDuration), addMinutes(workingDayEnd, 1))) {
@@ -119,11 +118,11 @@ exports.getAvailability = async (req, res) => {
         // If the slot is free, add it to our list in 'HH:mm' format.
         availableSlots.push(format(potentialSlotStart, 'HH:mm'));
       }
-      
+
       // Move to the next potential slot start time based on our interval.
       potentialSlotStart = addMinutes(potentialSlotStart, SLOT_INTERVAL);
     }
-    
+
     // --- 6. Send the Final List of Available Slots ---
     res.status(200).json({
       success: true,
@@ -135,13 +134,23 @@ exports.getAvailability = async (req, res) => {
   }
 };
 
-// The setAvailability function remains unchanged for now.
 exports.setAvailability = async (req, res) => {
   try {
+    const { weeklyAvailability, nonWorkingDays } = req.body;
+
+    const updatedAvailability = await Availability.findOneAndUpdate(
+      {},
+      { weeklyAvailability, nonWorkingDays },
+      {
+        new: true,
+        upsert: true,
+        runValidators: true
+      }
+    )
     res.status(201).json({
       success: true,
-      message: 'Availability successfully set/updated. Logic to be implemented.',
-      data: req.body,
+      message: 'Availability schedule successfully updated.',
+      data: updatedAvailability,
     });
   } catch (error) {
     console.error('Error in setAvailability:', error);

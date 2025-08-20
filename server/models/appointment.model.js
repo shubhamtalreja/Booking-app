@@ -25,10 +25,15 @@ const appointmentSchema = new mongoose.Schema(
     },
 
     status: {
-        type: String,
-        enum: ['pending_payment', 'confirmed', 'cancelled'],
-        default: 'confirmed',
+      type: String,
+      enum: ['pending_payment', 'confirmed', 'cancelled'],
+      default: 'confirmed',
     },
+    // provider: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Provider',
+    //   required: true
+    // }
   },
   {
     timestamps: true,
