@@ -8,6 +8,7 @@ import BookingPage from './pages/BookingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import ClientDashboardPage from './pages/ClientDashboardPage';
 
 
 function App() {
@@ -17,9 +18,17 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='/booking' element={<BookingPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
+          <Route path='/booking' element={
+            <ProtectedRoute>
+              <BookingPage />
+            </ProtectedRoute>
+          } />
+          <Route path='/dashboard' element={
+            <ProtectedRoute>
+              <ClientDashboardPage />
+            </ProtectedRoute>} />
           <Route path='/admin/dashboard' element={<ProtectedRoute>
             <AdminDashboardPage />
           </ProtectedRoute>} />
