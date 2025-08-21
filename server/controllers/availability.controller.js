@@ -157,3 +157,21 @@ exports.setAvailability = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+
+exports.getAvailabilityConfig = async (req, res) => {
+  try {
+    const availabilityConfig = await Availability.findOne();
+
+    if (!availabilityConfig) {
+      return res.status(404).json({ success: false, message: 'Availability configuration not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: availabilityConfig,
+    });
+  } catch (error) {
+    console.error('Error fetching availability config:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+}
