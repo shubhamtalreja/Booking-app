@@ -1,0 +1,84 @@
+
+.appointment-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.appointment-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+.appointment-card.past-appointment {
+  opacity: 0.75;
+  background-color: #f8f9fa;
+}
+
+.card-header {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 1.3em;
+  color: #333;
+}
+
+.card-body p {
+  margin: 8px 0;
+  font-size: 1em;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.card-body strong {
+  color: #333;
+  margin-right: 8px;
+  min-width: 60px;
+}
+
+.card-body p {
+  margin: 8px 0;
+  font-size: 1em;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.card-body strong {
+  color: #333;
+  margin-right: 8px;
+  min-width: 60px;
+}
+
+.card-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #f0f0f0;
+  text-align: right;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
