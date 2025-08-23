@@ -4,7 +4,8 @@ const router = express.Router();
 const {
     createAppointment,
     getMyAppointments,
-    getAllAppointments
+    getAllAppointments,
+    deleteAppointment
 } = require('../controllers/appointment.controller')
 
 const { admin } = require('../middleware/admin.middleware');
@@ -15,5 +16,7 @@ router.post('/', protect, createAppointment);
 router.get('/me', protect, getMyAppointments);
 
 router.get('/', protect, admin, getAllAppointments);
+
+router.delete('/:id', protect, deleteAppointment);
 
 module.exports = router;

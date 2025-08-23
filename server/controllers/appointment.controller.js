@@ -136,9 +136,9 @@ exports.createAppointment = async (req, res) => {
 // @access  Private
 exports.getMyAppointments = async (req, res) => {
     try {
-        const appointments = await Appointment.find({client: req.user.id})
-        .populate('service')
-        .sort({startTime: -1});
+        const appointments = await Appointment.find({ client: req.user.id })
+            .populate('service')
+            .sort({ startTime: -1 });
 
         res.status(200).json({
             success: true,
@@ -157,10 +157,10 @@ exports.getMyAppointments = async (req, res) => {
 // @access  Private/Admin
 exports.getAllAppointments = async (req, res) => {
     try {
-         const appointments = await Appointment.find({})
-        .populate('service')
-        .populate('client', 'name email')
-        .sort({startTime: -1});
+        const appointments = await Appointment.find({})
+            .populate('service')
+            .populate('client', 'name email')
+            .sort({ startTime: -1 });
 
         res.status(200).json({
             success: true,
@@ -177,3 +177,44 @@ exports.getAllAppointments = async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
+
+
+//  @desc    Delete an appointment
+//  @route   DELETE /api/appointments/:id
+//  @access  Private
+exports.deleteAppointment = async (req, res) => {
+
+    try {
+        const appointmentId = req.params.id;
+        const appointment = await Appointment.findById(appointmentId);
+
+        if (!appointment) {
+            return res.status(404).json({ success: false, message: 'Appointment not found' });
+        }
+
+        const CANCELLATION_WINDOW_HOURS = 24;
+        const now = new Date();
+
+        const appointmentStartTime = new Date(appointment.startTime);
+
+        if (isBefore(appointmentStartTime, addHours(now, CANCELLATION_WINDOW_HOURS))) {
+            return res.status(400).json({
+                success: false,
+                message: `Appointments cannot be cancelled within ${CANCELLATION_WINDOW_HOURS} hours of the start time.`
+            });
+        }
+
+        const isOwner = appointment.client.toString() === req.user.id;
+        const isAdmin = req.user.role === 'admin';
+
+        if (!isOwner && !isAdmin) {
+            return res.status(403).json({ success: false, message: 'You do not have permission to delete this appointment.' });
+        }
+
+        await appointment.deleteOne();
+        res.status(200).json({ success: true, message: 'Appointment deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting appointment:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+}
