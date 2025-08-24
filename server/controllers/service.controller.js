@@ -1,8 +1,7 @@
-const asyncHandler = require('express-async-handler');
-
 const Service = require('../models/service.model')
 
-
+const asyncHandler = require('../middleware/async.middleware');
+const ErrorResponse = require('../utils/errorResponse');
 // @desc    Create a new service
 // @route   POST /api/services
 // @access  Private/Admin
@@ -11,7 +10,8 @@ const createService = asyncHandler(async (req, res) => {
     const { name, description, duration, price } = req.body;
 
     if (!name || !description || !duration || !price) {
-        throw new Error("Please provide all required fields: name, description, duration, and price.")
+        return next(new ErrorResponse(`Please provide all required fields: name, description, duration, and price.`, 404))
+
     }
 
     const service = await Service.create({
@@ -42,8 +42,7 @@ const getServiceById = asyncHandler(async (req, res) => {
     const serviceById = await Service.findById(req.params.id);
 
     if (!serviceById) {
-        res.status(404);
-        throw new Error("Service not found");
+        return next(new ErrorResponse(`Service not found with id of ${req.params.id}`, 404))
     }
 
     res.status(200).json({ serviceById });
@@ -57,31 +56,30 @@ const updateService = asyncHandler(async (req, res) => {
     const service = await Service.findById(req.params.id);
 
     if (!service) {
-        res.status(404);
-        throw new Error("Service not found");
+        return next(new ErrorResponse(`Service not found with id of ${req.params.id}`, 404))
     }
 
-    const updateService = await Service.findByIdAndUpdate(req.params.id, req.body,{
+    const updateService = await Service.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true
     })
-    res.status(200).json({updateService})
+    res.status(200).json({ updateService })
 })
 
 // @desc    Delete a service
 // @route   DELETE /api/services/:id
 // @access  Private/Admin
 const deleteService = asyncHandler(async (req, res) => {
-   const service = await Service.findById(req.params.id);
+    const service = await Service.findById(req.params.id);
 
-  if (!service) {
-    res.status(404); // Not Found
-    throw new Error('Service not found');
-  }
+    if (!service) {
+        return next(new ErrorResponse(`Service not found with id of ${req.params.id}`, 404))
 
-  await Service.findByIdAndDelete(req.params.id);
+    }
 
-  res.status(200).json({ message: 'Service deleted successfully', id: req.params.id });
+    await Service.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ message: 'Service deleted successfully', id: req.params.id });
 })
 
 module.exports = {

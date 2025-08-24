@@ -2,6 +2,9 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { getAllServices } from '../services/service';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import './ServiceList.css';
 
 const ServiceList = ({ onServiceSelect, selectedService }) => {
     const [services, setServices] = useState([]);
@@ -26,7 +29,19 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
     }, [])
 
     if (loading) {
-        return <div>Loading services...</div>;
+        return (
+            <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
+                <h2><Skeleton width={200} /></h2>
+                <div className="appointment-card-skeleton">
+                    <h3><Skeleton width={`80%`} /></h3>
+                    <p><Skeleton count={2} /></p>
+                </div>
+                <div className="appointment-card-skeleton">
+                    <h3><Skeleton width={`60%`} /></h3>
+                    <p><Skeleton count={2} /></p>
+                </div>
+            </SkeletonTheme>
+        );;
     }
 
     if (error) {
@@ -36,12 +51,13 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
     return (
         <div>
             <h3>Step 1: Select a Service</h3>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className='services-container' style={{ display: 'flex', flexDirection: 'column' }}>
                 {services?.map((service) => {
                     const isSelected = selectedService?._id === service._id;
 
                     return (
-                        <div
+                        <div 
+                            className='service-card'
                             key={service._id}
                             onClick={() => onServiceSelect(service)}
                             style={{

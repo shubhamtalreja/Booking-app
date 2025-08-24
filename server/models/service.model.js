@@ -7,17 +7,20 @@ const serviceSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Service name is required'],
         trim: true,
-        unique: true
+        unique: true,
+        maxlength: [100, 'Service name cannot be more than 100 characters.']
     },
     description: {
         type: String,
         required: [true, 'Service description is required'],
-        trim: true
+        trim: true,
+        maxlength: [500, 'Service description cannot be more than 500 characters.']
     },
     duration: {
         type: Number,
         required: [true, 'Service duration is required'],
-        min: [1, 'Duration must be at least 1 minute.'], // A service must take some amount of time.
+        min: [5, 'Service duration must be at least 5 minutes.'],
+        max: [480, 'Service duration cannot exceed 480 minutes (8 hours).']
     },
     price: {
         type: String,

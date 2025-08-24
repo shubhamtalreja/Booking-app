@@ -34,6 +34,13 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
+              {user.role === 'client' && (
+                <li className="nav-item">
+                  <Link to="/dashboard" className="nav-links">
+                    Dashboard
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
                 <button onClick={logout} className="nav-links-button">
                   Logout

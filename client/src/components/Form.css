@@ -24,7 +24,7 @@
   color: #333;
 }
 
-.form-group {
+/* .form-group {
   display: flex;
   flex-direction: column;
 }
@@ -33,7 +33,7 @@
   margin-bottom: 8px;
   font-weight: 600;
   color: #555;
-}
+} */
 
 .form-group input {
   padding: 12px 15px;
@@ -70,4 +70,29 @@
   color: #c0392b;
   font-size: 0.875rem;
   margin-top: 5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column; /* Stack label and input */
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+}
+
+/* --- Desktop Styles --- */
+/* When the screen is 768px or WIDER, change the layout */
+@media (min-width: 768px) {
+  .form-group {
+    flex-direction: row; /* Put label and input side-by-side */
+    align-items: center; /* Vertically align them */
+  }
+
+  .form-group label {
+    margin-bottom: 0;
+    margin-right: 15px;
+    width: 120px; /* Give the label a fixed width for alignment */
+  }
 }

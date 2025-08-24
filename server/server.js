@@ -8,6 +8,8 @@ const serviceRoutes = require('./routes/service.routes')
 const authRoutes = require('./routes/auth.routes');
 const availabilityRoutes = require('./routes/availability.routes');
 const appointmentRoutes = require('./routes/appointment.routes');
+const startScheduler = require('./scheduler');
+const errorHandler = require('./middleware/error.middleware');
 
 dbConnection();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +25,8 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/appointments', appointmentRoutes);
+startScheduler();
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log("Successfully listening on PORT: ", PORT);

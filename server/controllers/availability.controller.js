@@ -1,6 +1,8 @@
 const Availability = require('../models/availability.model');
 const Appointment = require('../models/appointment.model');
 const Service = require('../models/service.model');
+const asyncHandler = require('../middleware/async.middleware');
+const ErrorResponse = require('../utils/errorResponse');
 const {
   parseISO,
   startOfDay,
@@ -20,7 +22,7 @@ const {
  * @route   GET /api/availability?date=YYYY-MM-DD&serviceId=...
  * @access  Public
  */
-exports.getAvailability = async (req, res) => {
+exports.getAvailability = asyncHandler( async(req, res) => {
 
   const SLOT_INTERVAL = 15;
 
@@ -29,7 +31,8 @@ exports.getAvailability = async (req, res) => {
 
     // --- 1. Initial Validation ---
     if (!date || !serviceId) {
-      return res.status(400).json({ success: false, message: 'Date and service ID are required.' });
+      return next(new ErrorResponse(`Date and service ID are required.`, 400))
+      
     }
 
     // The date from the query will be a string like '2024-10-27'.
@@ -54,7 +57,8 @@ exports.getAvailability = async (req, res) => {
     ]);
 
     if (!service) {
-      return res.status(404).json({ success: false, message: 'Service not found.' });
+            return next(new ErrorResponse('Service not found', 400))
+
     }
     if (!availability) {
       // If the admin hasn't set up their schedule, no slots are available.
@@ -132,7 +136,7 @@ exports.getAvailability = async (req, res) => {
     console.error('Error in getAvailability:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
-};
+});
 
 exports.setAvailability = async (req, res) => {
   try {

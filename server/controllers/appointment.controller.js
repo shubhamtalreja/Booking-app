@@ -12,30 +12,38 @@ const {
     addMinutes,
     isBefore,
     isAfter,
-    getDay
+    getDay,
+    format
 } = require('date-fns');
 const { default: mongoose } = require('mongoose');
+const { sendEmail } = require('../utils/email');
 
 
 // @desc    Create a new appointment
 // @route   POST /api/appointments
 // @access  Private
 exports.createAppointment = async (req, res) => {
+    console.log('Received appointment creation request:', req.body);
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const { serviceId, startTime } = req.body;
+        const { service, date, time } = req.body;
         const clientId = req.user.id; // Reliably get the user ID from the protect middleware
 
         // --- 1. Basic Input Validation ---
-        if (!serviceId || !startTime) {
-            return res.status(400).json({ success: false, message: 'Service ID and start time are required.' });
+        const serviceId = typeof service === 'string' ? service : service?._id;
+        if (!serviceId || !date || !time) {
+            return res.status(400).json({ success: false, message: 'serviceId/date/time are required.' });
         }
 
-        const proposedStartTime = parseISO(startTime);
+        const [hours, minutes] = time.split(':').map(Number);
+        let proposedStartTime = new Date(date);
+        proposedStartTime.setHours(hours, minutes, 0, 0);
+
+        const proposedEndTime = addMinutes(proposedStartTime, service.duration);
 
         // --- 2. Fetch All Necessary Data in Parallel ---
-        const [service, availability, existingAppointments] = await Promise.all([
+        const [services, availability, existingAppointments] = await Promise.all([
             Service.findById(serviceId).session(session),
             Availability.findOne().session(session),
             Appointment.find({
@@ -49,7 +57,7 @@ exports.createAppointment = async (req, res) => {
 
         // --- 3. Run a Gauntlet of Validation Checks ---
 
-        if (!service) {
+        if (!services) {
             return res.status(404).json({ success: false, message: 'Service not found.' });
         }
 
@@ -57,7 +65,7 @@ exports.createAppointment = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Booking is not possible, as business hours have not been set.' });
         }
 
-        const proposedEndTime = addMinutes(proposedStartTime, service.duration);
+        // const proposedEndTime = addMinutes(proposedStartTime, service.duration);
 
         // Check 3a: Is the business open on this day of the week?
         const dayOfWeekIndex = getDay(proposedStartTime);
@@ -109,6 +117,47 @@ exports.createAppointment = async (req, res) => {
         await newAppointment.save({ session });
 
         await session.commitTransaction();
+
+        const populatedAppointment = await Appointment.findById(newAppointment._id).populate('client service');
+
+        try {
+            const client = populatedAppointment.client;
+            const serviceDetails = populatedAppointment.service;
+
+            const emailOptions = {
+                to: client.email,
+                subject: `Booking Confirmation: ${serviceDetails.name}`,
+                // Plain text version for compatibility
+                text: `Hello ${client.name},\n\nYour appointment for ${serviceDetails.name} is confirmed!\n\nDetails:\nDate: ${format(new Date(populatedAppointment.startTime), 'EEEE, MMMM do, yyyy')}\nTime: ${format(new Date(populatedAppointment.startTime), 'p')}\n\nWe look forward to seeing you!\n`,
+                // Rich HTML version for modern email clients
+                html: `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                        <h2>Booking Confirmation</h2>
+                        <p>Hello <strong>${client.name}</strong>,</p>
+                        <p>Your appointment for <strong>${serviceDetails.name}</strong> has been successfully booked and confirmed.</p>
+                        <hr>
+                        <h3>Appointment Details:</h3>
+                        <ul>
+                        <li><strong>Service:</strong> ${serviceDetails.name}</li>
+                        <li><strong>Date:</strong> ${format(new Date(populatedAppointment.startTime), 'EEEE, MMMM do, yyyy')}</li>
+                        <li><strong>Time:</strong> ${format(new Date(populatedAppointment.startTime), 'p')}</li>
+                        <li><strong>Duration:</strong> ${serviceDetails.duration} minutes</li>
+                        </ul>
+                        <hr>
+                        <p>We look forward to seeing you!</p>
+                        <p><em>This is an automated email. Please do not reply.</em></p>
+                    </div>
+                    `,
+                };
+
+            await sendEmail(emailOptions);
+
+        } catch (emailError) {
+            // Log the email error for debugging, but don't send an error response to the client.
+            // The booking was successful, so that's what matters most.
+            console.error('Email could not be sent after successful booking:', emailError);
+        }
+
 
         res.status(201).json({
             success: true,

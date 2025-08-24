@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { getAvailabilityConfig, setAvailabilityConfig } from '../services/availability.service';
+import LoadingSpinner from './LoadingSpinner';
 
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -96,7 +97,7 @@ const AvailabilityManagement = () => {
   };
 
   if (loading) {
-    return <p>Loading availability schedule...</p>;
+    return <LoadingSpinner/>;
   }
 
   return (

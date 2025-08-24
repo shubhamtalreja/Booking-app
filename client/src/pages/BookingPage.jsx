@@ -8,7 +8,8 @@ import 'react-day-picker/dist/style.css';
 import { useCallback } from 'react';
 import { isBefore, startOfDay } from 'date-fns';
 import ConfirmationModal from '../components/ConfirmationModal';
-
+import { createAppointment } from '../services/appointment.service';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const BookingPage = () => {
 
@@ -122,13 +123,24 @@ const BookingPage = () => {
     }));
   }
 
-  const handleBookingConfirm = () => {
+  const handleBookingConfirm = async() => {
+
+      try {
+
+        const response = await createAppointment(selection);
+        console.log('Booking response:', response);
+        alert('Appointment booked successfully!');
+      }catch (error) {
+        console.error('Booking failed:', error);
+        alert('There was a problem booking your appointment. Please try again.');
+        return;
+      }
     console.log('Booking Confirmed!', selection);
 
     setIsModalOpen(false);
   };
 
-  if (isConfigLoading) return <p>Loading schedule...</p>;
+  if (isConfigLoading) return <LoadingSpinner/>;
   if (configError) return <p style={{ color: 'red' }}>{configError}</p>;
   return (
     <div>
