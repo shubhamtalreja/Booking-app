@@ -10,7 +10,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          Glamour Booking
+          Easy Appointment
         </Link>
         
         <ul className="nav-menu">
