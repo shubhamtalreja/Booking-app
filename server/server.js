@@ -18,6 +18,12 @@ const corsOptions = {
     optionSuccessStatus: "200"
 }
 
+if (process.env.NODE_ENV === 'development') {
+  const morgan = require('morgan');
+  app.use(morgan('dev'));
+  console.log('Morgan logger enabled for development.');
+}
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api/health', healthRoute);
