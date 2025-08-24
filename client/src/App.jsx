@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import ClientDashboardPage from './pages/ClientDashboardPage';
+import AdminRoute from './components/AdminRoute';
 
 
 function App() {
@@ -29,9 +30,9 @@ function App() {
             <ProtectedRoute>
               <ClientDashboardPage />
             </ProtectedRoute>} />
-          <Route path='/admin/dashboard' element={<ProtectedRoute>
+          <Route path='/admin/dashboard' element={<AdminRoute>
             <AdminDashboardPage />
-          </ProtectedRoute>} />
+          </AdminRoute>} />
           <Route path='*' element={<h1>404 Page Not Found</h1>} />
         </Routes>
       </main>

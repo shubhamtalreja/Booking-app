@@ -30,3 +30,13 @@ export const getAvailabilityConfig = async () => {
         throw new Error('Failed to fetch availability configuration.');
     }
 }
+
+export const setAvailabilityConfig = async (configData) => {
+  try {
+    const response = await apiClient.post('/availability', configData);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error setting availability config:', error.response ? error.response.data : error.message);
+    throw new Error(error.response?.data?.message || 'Failed to save schedule.');
+  }
+};
