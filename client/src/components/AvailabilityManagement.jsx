@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { getAvailabilityConfig, setAvailabilityConfig } from '../services/availability.service';
-import LoadingSpinner from './LoadingSpinner';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -97,7 +98,20 @@ const AvailabilityManagement = () => {
   };
 
   if (loading) {
-    return <LoadingSpinner/>;
+    return (
+      <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
+        <h2><Skeleton width={200} /></h2>
+        <div className="appointment-card-skeleton">
+          <h3><Skeleton width={`80%`} /></h3>
+          <p><Skeleton count={2} /></p>
+        </div>
+        <div className="appointment-card-skeleton">
+          <h3><Skeleton width={`60%`} /></h3>
+          <p><Skeleton count={2} /></p>
+        </div>
+      </SkeletonTheme>
+    );
+
   }
 
   return (
