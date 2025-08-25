@@ -1,0 +1,28 @@
+.services-container {
+  display: flex;
+  flex-direction: column; /* Stack cards vertically */
+  gap: 20px; /* Space between cards */
+}
+
+.service-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+/* --- Tablet Styles --- */
+/* When the screen is 768px or WIDER, these styles apply */
+@media (min-width: 768px) {
+  .services-container {
+    display: grid; /* Switch to a grid layout */
+    grid-template-columns: repeat(2, 1fr); /* Create a 2-column grid */
+  }
+}
+
+/* --- Desktop Styles --- */
+/* When the screen is 1024px or WIDER, these styles apply */
+@media (min-width: 1024px) {
+  .services-container {
+    grid-template-columns: repeat(3, 1fr); /* Create a 3-column grid */
+  }
+}

@@ -31,3 +31,13 @@ export const cancelAppointment = async (appointmentId) => {
     throw new Error(error.response?.data?.message || 'Failed to cancel appointment.');
   }
 }
+
+export const createAppointment = async (appointmentData) => {
+  try {
+    const response = await apiClient.post('/appointments',appointmentData);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error cancelling appointment:', error.response ? error.response.data : error.message);
+    throw new Error(error.response?.data?.message || 'Failed to cancel appointment.');
+  }
+}

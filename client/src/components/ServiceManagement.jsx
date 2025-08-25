@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getAllServices, createService, updateService, deleteService } from '../services/service'
+import LoadingSpinner from './LoadingSpinner';
 
 
 const ServiceManagement = () => {
@@ -82,7 +83,7 @@ const ServiceManagement = () => {
     setFormData({ name: '', description: '', duration: '', price: '' });
   };
 
-  if (loading) return <p>Loading services...</p>;
+  if (loading) return <LoadingSpinner/>;
   
   return (
     <div style={{ marginTop: '40px' }}>

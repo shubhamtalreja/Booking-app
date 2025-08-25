@@ -4,6 +4,7 @@ import { getAllAppointments } from '../services/appointment.service';
 import { format, isToday, isThisWeek, isThisMonth } from 'date-fns';
 import AvailabilityManagement from '../components/AvailabilityManagement';
 import ServiceManagement from '../components/ServiceManagement';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const AdminDashboardPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -49,7 +50,7 @@ const AdminDashboardPage = () => {
   }, [appointments, filter]);
 
   if (loading) {
-    return <div style={{ padding: '20px' }}>Loading all appointments...</div>;
+    return <LoadingSpinner/>;
   }
 
   if (error) {

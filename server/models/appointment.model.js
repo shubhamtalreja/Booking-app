@@ -27,13 +27,12 @@ const appointmentSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ['pending_payment', 'confirmed', 'cancelled'],
-      default: 'confirmed',
+      default: 'pending_payment',
     },
-    // provider: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'Provider',
-    //   required: true
-    // }
+    reminderSent: {
+      type: Boolean,
+      default: false,
+    }
   },
   {
     timestamps: true,

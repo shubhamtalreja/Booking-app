@@ -4,6 +4,7 @@ import { cancelAppointment, getAppointments } from '../services/appointment.serv
 import { format, isFuture } from 'date-fns';
 import { useMemo } from 'react';
 import AppointmentCard from '../components/AppointmentCard';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const ClientDashboardPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -62,7 +63,7 @@ const ClientDashboardPage = () => {
 
 
   if (loading) {
-    return <div style={{ padding: '20px' }}>Loading your appointments...</div>;
+    return <LoadingSpinner />;
   }
 
   if (error) {

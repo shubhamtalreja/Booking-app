@@ -10,7 +10,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          Glamour Booking
+          Easy Appointment
         </Link>
         
         <ul className="nav-menu">
@@ -30,6 +30,13 @@ const Navbar = () => {
               {user.role === 'admin' && (
                 <li className="nav-item">
                   <Link to="/admin/dashboard" className="nav-links">
+                    Dashboard
+                  </Link>
+                </li>
+              )}
+              {user.role === 'client' && (
+                <li className="nav-item">
+                  <Link to="/dashboard" className="nav-links">
                     Dashboard
                   </Link>
                 </li>
