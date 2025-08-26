@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getAllServices, createService, updateService, deleteService } from '../services/service'
-import LoadingSpinner from './LoadingSpinner';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 const ServiceManagement = () => {
@@ -83,7 +84,22 @@ const ServiceManagement = () => {
     setFormData({ name: '', description: '', duration: '', price: '' });
   };
 
-  if (loading) return <LoadingSpinner/>;
+  if (loading) {
+    return (
+      <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
+        <h2><Skeleton width={200} /></h2>
+        <div className="appointment-card-skeleton">
+          <h3><Skeleton width={`80%`} /></h3>
+          <p><Skeleton count={2} /></p>
+        </div>
+        <div className="appointment-card-skeleton">
+          <h3><Skeleton width={`60%`} /></h3>
+          <p><Skeleton count={2} /></p>
+        </div>
+      </SkeletonTheme>
+    );
+
+  }
   
   return (
     <div style={{ marginTop: '40px' }}>
