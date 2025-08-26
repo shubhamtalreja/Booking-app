@@ -119,10 +119,10 @@ const ServiceManagement = () => {
 
       {/* --- The List of Existing Services --- */}
       <div>
-        {services.map((service) => (
+        {services?.map((service) => (
           <div key={service._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '1px solid #ddd', marginBottom: '10px' }}>
             <div>
-              <strong>{service.name}</strong> ({service.duration} mins) - ${service.price}
+              <strong>{service?.name}</strong> ({service?.duration} mins) - ${service?.price}
               <p style={{ margin: '5px 0 0 0', color: '#666' }}>{service.description}</p>
             </div>
             <div>

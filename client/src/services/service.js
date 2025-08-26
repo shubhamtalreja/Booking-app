@@ -14,7 +14,8 @@ export const getAllServices = async () => {
 export const createService = async (serviceData) => {
     try {
         const response = await apiClient.post('/services', serviceData);
-        return response.data.data;
+        
+        return response.data.service;
     } catch (error) {
         console.error('Error creating service:', error.response ? error.response.data : error.message);
         throw new Error(error.response?.data?.message || 'Failed to create service.');
@@ -25,7 +26,7 @@ export const updateService = async (id, serviceData) => {
     try {
         const response = await apiClient.put(`/services/${id}`, serviceData);
 
-        return response.data.data;
+        return response.data.updateService;
     } catch (error) {
         console.error('Error updating service:', error.response ? error.response.data : error.message);
         throw new Error(error.response?.data?.message || 'Failed to update service.');
