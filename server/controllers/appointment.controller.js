@@ -24,9 +24,10 @@ const { sendEmail } = require('../utils/email');
 // @access  Private
 exports.createAppointment = async (req, res) => {
     console.log('Received appointment creation request:', req.body);
-    const session = await mongoose.startSession();
+    // const session = await mongoose.startSession();
+    // session.startTransaction();
+
     try {
-        session.startTransaction();
         const { service, date, time } = req.body;
         const clientId = req.user.id; // Reliably get the user ID from the protect middleware
 
@@ -43,16 +44,27 @@ exports.createAppointment = async (req, res) => {
         const proposedEndTime = addMinutes(proposedStartTime, service.duration);
 
         // --- 2. Fetch All Necessary Data in Parallel ---
+        // const [services, availability, existingAppointments] = await Promise.all([
+        //     Service.findById(serviceId).session(session),
+        //     Availability.findOne().session(session),
+        //     Appointment.find({
+        //         startTime: {
+        //             $gte: startOfDay(proposedStartTime),
+        //             $lt: endOfDay(proposedStartTime),
+        //         },
+        //         status: 'confirmed',
+        //     }).session(session),
+        // ]);
         const [services, availability, existingAppointments] = await Promise.all([
-            Service.findById(serviceId).session(session),
-            Availability.findOne().session(session),
+            Service.findById(serviceId),
+            Availability.findOne(),
             Appointment.find({
                 startTime: {
                     $gte: startOfDay(proposedStartTime),
                     $lt: endOfDay(proposedStartTime),
                 },
                 status: 'confirmed',
-            }).session(session),
+            }),
         ]);
 
         // --- 3. Run a Gauntlet of Validation Checks ---
@@ -104,7 +116,7 @@ exports.createAppointment = async (req, res) => {
             }
         }
 
-        const newAppointment = new Appointment({
+        const newAppointment = Appointment.create({
             client: clientId,
             service: serviceId,
             startTime: proposedStartTime,
@@ -114,9 +126,9 @@ exports.createAppointment = async (req, res) => {
 
 
 
-        await newAppointment.save({ session });
+        // await newAppointment.save({ session });
 
-        await session.commitTransaction();
+        // await session.commitTransaction();
 
         const populatedAppointment = await Appointment.findById(newAppointment._id).populate('client service');
 
@@ -166,7 +178,7 @@ exports.createAppointment = async (req, res) => {
         });
 
     } catch (error) {
-        await session.abortTransaction();
+        // await session.abortTransaction();
 
         console.error('Transactional booking error:', error);
 
@@ -176,7 +188,7 @@ exports.createAppointment = async (req, res) => {
         });
 
     } finally {
-        session.endSession();
+        // session.endSession();
     }
 };
 
