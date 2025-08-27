@@ -21,7 +21,7 @@ const createService = asyncHandler(async (req, res) => {
         price
     })
 
-    res.status(201).json({ message: `Created new service ${service}` });
+    res.status(201).json({ service });
 })
 
 // @desc    Get all services

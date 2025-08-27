@@ -10,6 +10,9 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
+                <img src="/easy-appointment-icon.svg" alt="Easy logo" width={30} height={35}/>
+                &nbsp;
+
           Easy Appointment
         </Link>
         
