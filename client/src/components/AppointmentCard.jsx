@@ -1,6 +1,7 @@
 import React from 'react';
 import { format, isPast } from 'date-fns';
 import './AppointmentCard.css';
+import { Button } from "@/components/ui/button"
 
 const AppointmentCard = ({ appointment, onCancel }) => {
     if (!appointment || !appointment.service) {
@@ -30,12 +31,12 @@ const AppointmentCard = ({ appointment, onCancel }) => {
             </div>
             {!isAppointmentPast && (
                 <div className="card-footer">
-                    <button
-                        className="btn-cancel"
+                    <Button
+                        variant="destructive"
                         onClick={() => onCancel(appointment._id)}
                     >
                         Cancel Appointment
-                    </button>
+                    </Button>
                 </div>
             )}
         </div>
