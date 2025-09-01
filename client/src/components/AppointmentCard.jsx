@@ -20,7 +20,7 @@ const AppointmentCard = ({ appointment, onCancel }) => {
     const isAppointmentPast = isPast(new Date(appointment.startTime));
 
     return (
-        <>
+        <div className='gap-2 p-2'>
             <Card className={isAppointmentPast ? "opacity-60" : ""}>
                 <CardHeader>
                     <CardTitle>{appointment.service.name}</CardTitle>
@@ -53,7 +53,7 @@ const AppointmentCard = ({ appointment, onCancel }) => {
                     </CardFooter>
                 )}
             </Card>
-        </>
+        </div>
     );
 };
 

@@ -5,6 +5,13 @@ import { getAllServices } from '../services/service';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './ServiceList.css';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 
 const ServiceList = ({ onServiceSelect, selectedService }) => {
     const [services, setServices] = useState([]);
@@ -50,33 +57,26 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
 
     return (
         <div>
-            <h3>Step 1: Select a Service</h3>
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                Step 1: Select a Service
+            </h4>
             <div className='services-container' style={{ display: 'flex', flexDirection: 'column' }}>
                 {services?.map((service) => {
-                    const isSelected = selectedService?._id === service._id;
-
                     return (
-                        <div 
-                            className='service-card'
-                            key={service._id}
-                            onClick={() => onServiceSelect(service)}
-                            style={{
-                                border: isSelected ? '2px solid #007bff' : '1px solid #ccc',
-                                margin: '8px 0',
-                                padding: '12px',
-                                borderRadius: '5px',
-                                cursor: 'pointer',
-                                transition: 'border-color 0.2s, box-shadow 0.2s',
-                                boxShadow: isSelected ? '0 0 5px rgba(0, 123, 255, 0.5)' : 'none'
-                            }}
-                        >
-                            <h4>{service.name}</h4>
-                            <p>{service.description}</p>
-                            <p>
+                        <Card key={service._id}
+                            onClick={() => onServiceSelect(service)}>
+                            <CardHeader>
+                                <CardTitle>{service.name}</CardTitle>
+                                <CardDescription>
+                                    <p>{service.description}</p>
+                                </CardDescription>
+                            </CardHeader>
+
+                            <CardContent>
                                 <strong>Duration:</strong> {service.duration} minutes | <strong>Price:</strong> ${service.price}
-                            </p>
-                        </div>
-                    )
+
+                            </CardContent>
+                        </Card>)
                 })}
             </div>
         </div>

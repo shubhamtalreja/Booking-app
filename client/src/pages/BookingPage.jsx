@@ -144,8 +144,6 @@ const BookingPage = () => {
   if (configError) return <p style={{ color: 'red' }}>{configError}</p>;
   return (
     <div>
-      <h2>Book Your Appointment</h2>
-      <p>Here clients will be able to select a service and book a time slot.</p>
       <ServiceList
         onServiceSelect={handleServiceSelect}
         selectedService={selection.service} />

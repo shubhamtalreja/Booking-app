@@ -2,7 +2,7 @@ const Appointment = require('../models/appointment.model');
 const Service = require('../models/service.model');
 const Availability = require('../models/availability.model');
 const {
-    parseISO,
+    addHours,
     startOfDay,
     endOfDay,
     setHours,
