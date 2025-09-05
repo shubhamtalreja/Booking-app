@@ -56,14 +56,16 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
     }
 
     return (
-        <div>
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                Step 1: Select a Service
-            </h4>
+        <div className='flex flex-col gap-4'>
+            <h3 className="scroll-m-20 text-xl font-semibold tracking-tight justify-center align-center items-center flex">
+                Select a Service
+            </h3>
             <div className='services-container' style={{ display: 'flex', flexDirection: 'column' }}>
                 {services?.map((service) => {
                     return (
-                        <Card key={service._id}
+                        <Card className="cursor-pointer hover:shadow-lg transition duration-300 hover:bg-zinc-200"
+                            style={{ border: selectedService?._id === service._id ? '2px solid #28282bff' : '1px solid #e0e0e0' }}
+                            key={service._id}
                             onClick={() => onServiceSelect(service)}>
                             <CardHeader>
                                 <CardTitle>{service.name}</CardTitle>
