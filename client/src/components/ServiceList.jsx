@@ -66,7 +66,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                         <Card className="cursor-pointer hover:shadow-lg transition duration-300 hover:bg-zinc-200"
                             style={{ border: selectedService?._id === service._id ? '2px solid #28282bff' : '1px solid #e0e0e0' }}
                             key={service._id}
-                            onClick={() => onServiceSelect(service)}>
+                            onClick={() => {onServiceSelect(service); selectedService?._id === service._id ? onServiceSelect(null) : null}}>
                             <CardHeader>
                                 <CardTitle>{service.name}</CardTitle>
                                 <CardDescription>
