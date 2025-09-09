@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './Form.css';
 import { register } from '../services/authService';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,10 @@ const RegisterForm = () => {
     email: '',
     password: '',
   });
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  const { login } = useAuth();
   
   const [errors, setErrors] = useState({});
 
@@ -40,9 +46,10 @@ const RegisterForm = () => {
       const data = await register(formData);
       
       console.log('Registration successful!', data);
+      login(data);
       
       alert('Registration successful! You can now log in.');
-
+      navigate(from, { replace: true });
     } catch (error) {
       console.error('Failed to register:', error);
       setErrors({ api: error.message || 'An unexpected error occurred.' });

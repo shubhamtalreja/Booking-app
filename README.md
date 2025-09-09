@@ -1,6 +1,6 @@
-# Easy Appointment
+# TapApt
 
-Easy Appointment is a full-stack **appointment booking app** where clients can book services, and admins can manage availability and appointments.
+Tap Appointment is a full-stack **appointment booking app** where clients can book services, and admins can manage availability and appointments.
 
 ##  Features
 

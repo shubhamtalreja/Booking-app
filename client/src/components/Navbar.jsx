@@ -10,10 +10,10 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-                <img src="/easy-appointment-icon.svg" alt="Easy logo" width={30} height={35}/>
+                <img src="/tapapt-icon.svg" alt="TapApt logo" width={30} height={35}/>
                 &nbsp;
 
-          Easy Appointment
+          TapApt
         </Link>
         
         <ul className="nav-menu">
@@ -24,7 +24,7 @@ const Navbar = () => {
           </li>
           <li className="nav-item">
             <Link to="/booking" className="nav-links">
-              Book Now
+              Book
             </Link>
           </li>
 
