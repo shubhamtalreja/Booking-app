@@ -1,10 +1,20 @@
 import React from 'react';
-import { useEffect, useState,  useMemo} from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { getAllAppointments } from '../services/appointment.service';
 import { format, isToday, isThisWeek, isThisMonth } from 'date-fns';
 import AvailabilityManagement from '../components/AvailabilityManagement';
 import ServiceManagement from '../components/ServiceManagement';
 import LoadingSpinner from '../components/LoadingSpinner';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { Button } from '@/components/ui/button';
 
 const AdminDashboardPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -50,7 +60,7 @@ const AdminDashboardPage = () => {
   }, [appointments, filter]);
 
   if (loading) {
-    return <LoadingSpinner/>;
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -66,7 +76,7 @@ const AdminDashboardPage = () => {
       <section>        <h3>All Appointments</h3>
         <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
           {['all', 'day', 'week', 'month'].map((period) => (
-            <button
+            <Button
               key={period}
               onClick={() => setFilter(period)}
               style={{
@@ -81,35 +91,35 @@ const AdminDashboardPage = () => {
               }}
             >
               {period === 'all' ? 'All Time' : `This ${period}`}
-            </button>
+            </Button>
           ))}
         </div>
 
         {filteredAppointments.length === 0 ? (
           <p>No appointments match the current filter.</p>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #333' }}>
-                <th style={{ padding: '12px' }}>Client</th>
-                <th style={{ padding: '12px' }}>Service</th>
-                <th style={{ padding: '12px' }}>Date</th>
-                <th style={{ padding: '12px' }}>Time</th>
-                <th style={{ padding: '12px' }}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHeader>
+              <TableRow className="text-base">
+                <TableHead className="w-[100px]">Client</TableHead>
+                <TableHead>Service</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead className="text-right">Time</TableHead>
+                <TableHead className="text-right">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {filteredAppointments.map((appt, index) => (
-                <tr key={appt._id} style={{ borderBottom: '1px solid #ddd', backgroundColor: index % 2 === 0 ? '#f9f9f9' : 'white' }}>
-                  <td style={{ padding: '12px' }}>{appt.client.name}</td>
-                  <td style={{ padding: '12px' }}>{appt.service.name}</td>
-                  <td style={{ padding: '12px' }}>{format(new Date(appt.startTime), 'MMMM d, yyyy')}</td>
-                  <td style={{ padding: '12px' }}>{format(new Date(appt.startTime), 'p')}</td>
-                  <td style={{ padding: '12px' }}>{appt.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                <TableRow key={index} className="text-base">
+                  <TableCell className="font-medium">{appt.client.name}</TableCell>
+                  <TableCell>{appt.service.name}</TableCell>
+                  <TableCell>{format(new Date(appt.startTime), 'MMMM d, yyyy')}</TableCell>
+                  <TableCell className="text-right">{format(new Date(appt.startTime), 'p')}</TableCell>
+                  <TableCell className="text-right">{appt.status}</TableCell>
+                </TableRow>))}
+            </TableBody>
+          </Table>
+
         )}
       </section>
       <section>
