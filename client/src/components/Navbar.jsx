@@ -71,6 +71,7 @@ const Navbar = () => {
           <NavigationMenuItem>
             <Button
               onClick={logout}
+              variant="ghost"
               className="px-3 py-2 text-red-600 hover:text-red-800 font-medium cursor-pointer"
             >
               Logout
