@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getAllServices, createService, updateService, deleteService } from '../services/service'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { DropdownMenuSeparator } from './ui/dropdown-menu';
 
 
 const ServiceManagement = () => {
@@ -102,8 +103,9 @@ const ServiceManagement = () => {
   }
   
   return (
-    <div style={{ marginTop: '40px' }}>
-      <h3>Manage Services</h3>
+    <div>
+      <h3 className='scroll-m-20 text-md font-semibold tracking-tight justify-center align-center items-center flex mt-10'>
+        Manage Services</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* --- The Create/Edit Form --- */}
@@ -132,6 +134,35 @@ const ServiceManagement = () => {
           </div>
         ))}
       </div>
+            <Card className={isAppointmentPast ? "opacity-60" : ""}>
+                <CardHeader>
+                    <CardTitle>{appointment.service.name}</CardTitle>
+                    <CardDescription>
+                        {format(new Date(appointment.startTime), "EEEE, MMMM do, yyyy")}
+                    </CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                    <p>
+                        <strong>Time:</strong>{" "}
+                        {`${format(new Date(appointment.startTime), "p")} - ${format(
+                            new Date(appointment.endTime),
+                            "p"
+                        )}`}
+                    </p>
+                    <p>
+                        <strong>Price:</strong> ${appointment.service.price}
+                    </p>
+                </CardContent>
+                    <CardFooter>
+                        <Button
+                            variant="destructive"
+                            onClick={() => onCancel(appointment._id)}
+                        >
+                            Cancel Appointment
+                        </Button>
+                    </CardFooter>
+            </Card>
     </div>
   );
 };
