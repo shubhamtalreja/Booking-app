@@ -7,7 +7,7 @@ const ErrorResponse = require('../utils/errorResponse');
 // @access  Private/Admin
 const createService = asyncHandler(async (req, res) => {
 
-    const { name, description, duration, price } = req.body;
+    const { name, description, duration, price, image } = req.body;
 
     if (!name || !description || !duration || !price) {
         return next(new ErrorResponse(`Please provide all required fields: name, description, duration, and price.`, 404))
@@ -18,7 +18,8 @@ const createService = asyncHandler(async (req, res) => {
         name,
         description,
         duration,
-        price
+        price,
+        image
     })
 
     res.status(201).json({ service });

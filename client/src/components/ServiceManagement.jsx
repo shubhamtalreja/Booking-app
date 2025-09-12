@@ -19,7 +19,7 @@ const ServiceManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editingService, setEditingService] = useState(null);
-  const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '' });
+  const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '', image: '' });
 
 
   useEffect(() => {
@@ -85,13 +85,14 @@ const ServiceManagement = () => {
       description: service.description,
       duration: service.duration,
       price: service.price,
+      image: service.image
     });
   };
 
   // Resets the form and exits "edit mode"
   const resetForm = () => {
     setEditingService(null);
-    setFormData({ name: '', description: '', duration: '', price: '' });
+    setFormData({ name: '', description: '', duration: '', price: '', image: '' });
   };
 
   if (loading) {
@@ -124,6 +125,7 @@ const ServiceManagement = () => {
         <Input type="text" name="description" value={formData.description} onChange={handleInputChange} placeholder="Description" required style={{ marginRight: '10px', padding: '8px' }} />
         <Input type="number" name="duration" value={formData.duration} onChange={handleInputChange} placeholder="Duration (mins)" required style={{ marginRight: '10px', padding: '8px' }} />
         <Input type="number" name="price" value={formData.price} onChange={handleInputChange} placeholder="Price" required style={{ marginRight: '10px', padding: '8px' }} />
+        <Input type="file" name="image" value={formData.image} onChange={handleInputChange} placeholder="Upload Image" required style={{ marginRight: '10px', padding: '8px' }} />
         <Button type="submit" style={{ padding: '8px 12px', cursor: 'pointer' }}>{editingService ? 'Update Service' : 'Add Service'}</Button>
         {editingService && <Button type="button" onClick={resetForm} style={{ marginLeft: '10px', padding: '8px 12px', cursor: 'pointer' }}>Cancel</Button>}
       </form>
@@ -134,6 +136,7 @@ const ServiceManagement = () => {
           <CardHeader>
             <CardTitle>{service?.name}</CardTitle>
             <CardDescription>
+              {service?.image}
               {service.description}
             </CardDescription>
           </CardHeader>
@@ -147,9 +150,8 @@ const ServiceManagement = () => {
               <strong>Price:</strong>${service?.price}
             </p>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex justify-end gap-1">
             <Button
-              variant="destructive"
               onClick={() => startEditing(service)}
             >
               Edit
