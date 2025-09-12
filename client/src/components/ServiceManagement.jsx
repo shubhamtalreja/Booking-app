@@ -2,32 +2,42 @@ import React, { useEffect, useState } from 'react'
 import { getAllServices, createService, updateService, deleteService } from '../services/service'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 
 const ServiceManagement = () => {
-    const [services, setServices] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [editingService, setEditingService] = useState(null);
-    const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '' });
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [editingService, setEditingService] = useState(null);
+  const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '' });
 
 
-    useEffect(() => {
-        const fetchServices = async () => { 
-            try {
-                setLoading(true);
-                const data = await getAllServices();
-                setServices(data);
-            } catch (err) {
-                setError(err.message || 'Failed to fetch services.');
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchServices();
-    },[]);
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        const data = await getAllServices();
+        setServices(data);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch services.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
 
-    const handleInputChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -100,38 +110,59 @@ const ServiceManagement = () => {
     );
 
   }
-  
+
   return (
-    <div style={{ marginTop: '40px' }}>
-      <h3>Manage Services</h3>
+    <div>
+      <h3 className='scroll-m-20 text-md font-semibold tracking-tight justify-center align-center items-center flex mt-10'>
+        Manage Services</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* --- The Create/Edit Form --- */}
       <form onSubmit={handleSubmit} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px' }}>
         <h4>{editingService ? 'Edit Service' : 'Add a New Service'}</h4>
-        <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Service Name" required style={{ marginRight: '10px', padding: '8px' }}/>
-        <input type="text" name="description" value={formData.description} onChange={handleInputChange} placeholder="Description" required style={{ marginRight: '10px', padding: '8px' }}/>
-        <input type="number" name="duration" value={formData.duration} onChange={handleInputChange} placeholder="Duration (mins)" required style={{ marginRight: '10px', padding: '8px' }}/>
-        <input type="number" name="price" value={formData.price} onChange={handleInputChange} placeholder="Price" required style={{ marginRight: '10px', padding: '8px' }}/>
-        <button type="submit" style={{ padding: '8px 12px', cursor: 'pointer' }}>{editingService ? 'Update Service' : 'Add Service'}</button>
-        {editingService && <button type="button" onClick={resetForm} style={{ marginLeft: '10px', padding: '8px 12px', cursor: 'pointer' }}>Cancel</button>}
+        <Input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Service Name" required style={{ marginRight: '10px', padding: '8px' }} />
+        <Input type="text" name="description" value={formData.description} onChange={handleInputChange} placeholder="Description" required style={{ marginRight: '10px', padding: '8px' }} />
+        <Input type="number" name="duration" value={formData.duration} onChange={handleInputChange} placeholder="Duration (mins)" required style={{ marginRight: '10px', padding: '8px' }} />
+        <Input type="number" name="price" value={formData.price} onChange={handleInputChange} placeholder="Price" required style={{ marginRight: '10px', padding: '8px' }} />
+        <Button type="submit" style={{ padding: '8px 12px', cursor: 'pointer' }}>{editingService ? 'Update Service' : 'Add Service'}</Button>
+        {editingService && <Button type="button" onClick={resetForm} style={{ marginLeft: '10px', padding: '8px 12px', cursor: 'pointer' }}>Cancel</Button>}
       </form>
 
       {/* --- The List of Existing Services --- */}
-      <div>
-        {services?.map((service) => (
-          <div key={service._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '1px solid #ddd', marginBottom: '10px' }}>
-            <div>
-              <strong>{service?.name}</strong> ({service?.duration} mins) - ${service?.price}
-              <p style={{ margin: '5px 0 0 0', color: '#666' }}>{service.description}</p>
-            </div>
-            <div>
-              <button onClick={() => startEditing(service)} style={{ marginRight: '10px' }}>Edit</button>
-              <button onClick={() => handleDelete(service._id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-      </div>
+      {services?.map((service) => (
+        <Card key={service._id} className='mb-10'>
+          <CardHeader>
+            <CardTitle>{service?.name}</CardTitle>
+            <CardDescription>
+              {service.description}
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <p>
+              <strong>Time:</strong>{" "}
+              {service?.duration} mins
+            </p>
+            <p>
+              <strong>Price:</strong>${service?.price}
+            </p>
+          </CardContent>
+          <CardFooter>
+            <Button
+              variant="destructive"
+              onClick={() => startEditing(service)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => handleDelete(service._id)}
+            >
+              Delete
+            </Button>
+          </CardFooter>
+        </Card>
+      ))}
     </div>
   );
 };
