@@ -19,6 +19,7 @@ const ServiceManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editingService, setEditingService] = useState(null);
+  const [file, setFile] = useState('');
   const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '', image: '' });
 
 
@@ -45,15 +46,29 @@ const ServiceManagement = () => {
   // Handles the form submission for both creating and updating
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const fd = new FormData();
+    fd.append("name", formData.name);
+    fd.append("description", formData.description);
+    fd.append("duration", formData.duration);
+    fd.append("price", formData.price);
+
+    if (formData.image instanceof File) {
+      // User uploaded a new file
+      fd.append("image", formData.image);
+    } else {
+      // User didn’t change image → send old URL string
+      fd.append("image", formData.image);
+    }
     try {
       if (editingService) {
         // --- UPDATE LOGIC ---
-        const updated = await updateService(editingService._id, formData);
+        const updated = await updateService(editingService._id, fd);
         // Find the index of the old service and replace it with the updated one.
         setServices(services.map((s) => (s._id === updated._id ? updated : s)));
       } else {
+        console.log('formData  ====>', fd, "file  ===>",file);
         // --- CREATE LOGIC ---
-        const newService = await createService(formData);
+        const newService = await createService(fd);
         // Add the new service to the top of the list for immediate feedback.
         setServices([newService, ...services]);
       }
@@ -125,7 +140,7 @@ const ServiceManagement = () => {
         <Input type="text" name="description" value={formData.description} onChange={handleInputChange} placeholder="Description" required style={{ marginRight: '10px', padding: '8px' }} />
         <Input type="number" name="duration" value={formData.duration} onChange={handleInputChange} placeholder="Duration (mins)" required style={{ marginRight: '10px', padding: '8px' }} />
         <Input type="number" name="price" value={formData.price} onChange={handleInputChange} placeholder="Price" required style={{ marginRight: '10px', padding: '8px' }} />
-        <Input type="file" name="image" value={formData.image} onChange={handleInputChange} placeholder="Upload Image" required style={{ marginRight: '10px', padding: '8px' }} />
+        <Input type="file" name="image" onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.files[0] }))} placeholder="Upload Image" required style={{ marginRight: '10px', padding: '8px' }} />
         <Button type="submit" style={{ padding: '8px 12px', cursor: 'pointer' }}>{editingService ? 'Update Service' : 'Add Service'}</Button>
         {editingService && <Button type="button" onClick={resetForm} style={{ marginLeft: '10px', padding: '8px 12px', cursor: 'pointer' }}>Cancel</Button>}
       </form>
@@ -147,7 +162,7 @@ const ServiceManagement = () => {
               {service?.duration} mins
             </p>
             <p>
-              <strong>Price:</strong>${service?.price}
+              <strong>Price:</strong> &#8377;{service?.price}
             </p>
           </CardContent>
           <CardFooter className="flex justify-end gap-1">

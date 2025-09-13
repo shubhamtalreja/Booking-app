@@ -12,9 +12,12 @@ export const getAllServices = async () => {
 
 }
 export const createService = async (serviceData) => {
+    console.log('data ===>', serviceData)
     try {
-        const response = await apiClient.post('/services', serviceData);
-        
+        const response = await apiClient.post('/services', serviceData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
         return response.data.service;
     } catch (error) {
         console.error('Error creating service:', error.response ? error.response.data : error.message);
@@ -24,7 +27,9 @@ export const createService = async (serviceData) => {
 }
 export const updateService = async (id, serviceData) => {
     try {
-        const response = await apiClient.put(`/services/${id}`, serviceData);
+        const response = await apiClient.put(`/services/${id}`, serviceData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
 
         return response.data.updateService;
     } catch (error) {

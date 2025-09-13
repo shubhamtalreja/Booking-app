@@ -12,11 +12,17 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { Cloudinary } from '@cloudinary/url-gen';
+import { auto } from '@cloudinary/url-gen/actions/resize';
+import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
+import { AdvancedImage } from '@cloudinary/react';
+import ENV_CONFIG from '@/config/EnvConfig';
 
 const ServiceList = ({ onServiceSelect, selectedService }) => {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const cld = new Cloudinary({ cloud: { cloudName: ENV_CONFIG.CLOUD_NAME } });
 
     useEffect(() => {
         const fetchService = async () => {
@@ -75,7 +81,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                             </CardHeader>
 
                             <CardContent>
-                                <strong>Duration:</strong> {service.duration} minutes | <strong>Price:</strong> ${service.price}
+                                <strong>Duration:</strong> {service.duration} minutes | <strong>Price:</strong> &#8377;{service.price}
 
                             </CardContent>
                         </Card>)

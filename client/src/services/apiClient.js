@@ -1,7 +1,9 @@
+import ENV_CONFIG from '@/config/EnvConfig';
 import axios from 'axios';
 
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: ENV_CONFIG.BASE_URL,
 });
 
 apiClient.interceptors.request.use(

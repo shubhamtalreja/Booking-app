@@ -6,13 +6,16 @@ const ErrorResponse = require('../utils/errorResponse');
 // @route   POST /api/services
 // @access  Private/Admin
 const createService = asyncHandler(async (req, res) => {
+    console.log('body ===>', req.body);
+    console.log('file ===>', req.file);
 
-    const { name, description, duration, price, image } = req.body;
+    const { name, description, duration, price } = req.body;
 
     if (!name || !description || !duration || !price) {
         return next(new ErrorResponse(`Please provide all required fields: name, description, duration, and price.`, 404))
 
     }
+    const image = req.file ? req.file.path : "";
 
     const service = await Service.create({
         name,

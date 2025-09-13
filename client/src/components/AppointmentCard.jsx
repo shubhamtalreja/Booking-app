@@ -37,7 +37,7 @@ const AppointmentCard = ({ appointment, onCancel }) => {
                         )}`}
                     </p>
                     <p>
-                        <strong>Price:</strong> ${appointment.service.price}
+                        <strong>Price:</strong> &#8377;{appointment.service.price}
                     </p>
                 </CardContent>
 
