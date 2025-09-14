@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/card"
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import apiClient from '@/services/apiClient';
+import ENV_CONFIG from '@/config/EnvConfig';
+import axios from 'axios';
 
 
 const ServiceManagement = () => {
@@ -19,9 +22,27 @@ const ServiceManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editingService, setEditingService] = useState(null);
-  const [file, setFile] = useState('');
+  const [imageUrls, setImageUrls] = useState([]);
   const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '', image: '' });
 
+  const handleImageUpload = async (e) => {
+    const files = e.target.files;
+    const uploadedUrls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append("file", files[i]);
+      formData.append("upload_preset", "service-image");
+      const res = await axios.post(
+        ENV_CONFIG.IMAGE_UPLOAD_API_URL,
+        formData
+      );
+
+      uploadedUrls.push(res.data.secure_url);
+    }
+
+    setImageUrls((prev) => [...prev, ...uploadedUrls]);
+  };
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -140,7 +161,13 @@ const ServiceManagement = () => {
         <Input type="text" name="description" value={formData.description} onChange={handleInputChange} placeholder="Description" required style={{ marginRight: '10px', padding: '8px' }} />
         <Input type="number" name="duration" value={formData.duration} onChange={handleInputChange} placeholder="Duration (mins)" required style={{ marginRight: '10px', padding: '8px' }} />
         <Input type="number" name="price" value={formData.price} onChange={handleInputChange} placeholder="Price" required style={{ marginRight: '10px', padding: '8px' }} />
-        <Input type="file" name="image" onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.files[0] }))} placeholder="Upload Image" required style={{ marginRight: '10px', padding: '8px' }} />
+        <Input type="file" name="image" multiple onChange={handleImageUpload} placeholder="Upload Image" required style={{ marginRight: '10px', padding: '8px' }} />
+        {/* Preview */}
+        <div className="flex gap-2 mt-5 mb-5">
+          {imageUrls.map((url, idx) => (
+            <img key={idx} src={url} alt="preview" width="80" />
+          ))}
+        </div>
         <Button type="submit" style={{ padding: '8px 12px', cursor: 'pointer' }}>{editingService ? 'Update Service' : 'Add Service'}</Button>
         {editingService && <Button type="button" onClick={resetForm} style={{ marginLeft: '10px', padding: '8px 12px', cursor: 'pointer' }}>Cancel</Button>}
       </form>
