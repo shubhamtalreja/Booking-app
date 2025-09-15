@@ -18,7 +18,7 @@ const createService = asyncHandler(async (req, res) => {
         name,
         description,
         duration,
-        price
+        price,
     })
 
     res.status(201).json({ service });

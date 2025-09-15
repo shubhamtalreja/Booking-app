@@ -37,7 +37,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, selection }) => {
             <strong>Time:</strong> {formattedTime}
           </p>
           <p>
-            <strong>Price:</strong> ${selection.service.price}
+            <strong>Price:</strong> &#8377;{selection.service.price}
           </p>
         </div>
         <div className="modal-footer">

@@ -15,8 +15,7 @@ const {
     getDay,
     format
 } = require('date-fns');
-const { default: mongoose } = require('mongoose');
-const { sendEmail } = require('../utils/email');
+const sendEmail = require('../utils/email');
 
 
 // @desc    Create a new appointment
@@ -116,7 +115,7 @@ exports.createAppointment = async (req, res) => {
             }
         }
 
-        const newAppointment = Appointment.create({
+        const newAppointment = await Appointment.create({
             client: clientId,
             service: serviceId,
             startTime: proposedStartTime,
@@ -131,6 +130,7 @@ exports.createAppointment = async (req, res) => {
         // await session.commitTransaction();
 
         const populatedAppointment = await Appointment.findById(newAppointment._id).populate('client service');
+
 
         try {
             const client = populatedAppointment.client;

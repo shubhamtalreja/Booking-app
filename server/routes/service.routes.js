@@ -13,7 +13,7 @@ const { admin } = require('../middleware/admin.middleware');
 router.route('/')
     .get(getAllServices)
     .post(protect, admin, createService);
-
+3
 router.route('/:id')
     .get(getServiceById)
     .put(protect, admin, updateService)

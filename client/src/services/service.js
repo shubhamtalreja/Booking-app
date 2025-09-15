@@ -12,9 +12,10 @@ export const getAllServices = async () => {
 
 }
 export const createService = async (serviceData) => {
+    console.log('data ===>', serviceData)
     try {
         const response = await apiClient.post('/services', serviceData);
-        
+
         return response.data.service;
     } catch (error) {
         console.error('Error creating service:', error.response ? error.response.data : error.message);

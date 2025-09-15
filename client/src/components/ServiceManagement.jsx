@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/card"
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import ENV_CONFIG from '@/config/EnvConfig';
+import axios from 'axios';
 
 
 const ServiceManagement = () => {
@@ -19,8 +21,27 @@ const ServiceManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editingService, setEditingService] = useState(null);
-  const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '' });
+  const [imageUrls, setImageUrls] = useState([]);
+  const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '', image: '' });
 
+  const handleImageUpload = async (e) => {
+    const files = e.target.files;
+    const uploadedUrls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append("file", files[i]);
+      formData.append("upload_preset", "service-image");
+      const res = await axios.post(
+        ENV_CONFIG.IMAGE_UPLOAD_API_URL,
+        formData
+      );
+
+      uploadedUrls.push(res.data.secure_url);
+    }
+
+    setImageUrls((prev) => [...prev, ...uploadedUrls]);
+  };
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -52,6 +73,7 @@ const ServiceManagement = () => {
         // Find the index of the old service and replace it with the updated one.
         setServices(services.map((s) => (s._id === updated._id ? updated : s)));
       } else {
+        console.log('formData  ====>', fd, "file  ===>",file);
         // --- CREATE LOGIC ---
         const newService = await createService(formData);
         // Add the new service to the top of the list for immediate feedback.
@@ -85,13 +107,14 @@ const ServiceManagement = () => {
       description: service.description,
       duration: service.duration,
       price: service.price,
+      image: service.image
     });
   };
 
   // Resets the form and exits "edit mode"
   const resetForm = () => {
     setEditingService(null);
-    setFormData({ name: '', description: '', duration: '', price: '' });
+    setFormData({ name: '', description: '', duration: '', price: '', image: '' });
   };
 
   if (loading) {
@@ -124,6 +147,13 @@ const ServiceManagement = () => {
         <Input type="text" name="description" value={formData.description} onChange={handleInputChange} placeholder="Description" required style={{ marginRight: '10px', padding: '8px' }} />
         <Input type="number" name="duration" value={formData.duration} onChange={handleInputChange} placeholder="Duration (mins)" required style={{ marginRight: '10px', padding: '8px' }} />
         <Input type="number" name="price" value={formData.price} onChange={handleInputChange} placeholder="Price" required style={{ marginRight: '10px', padding: '8px' }} />
+        <Input type="file" name="image" multiple onChange={handleImageUpload} placeholder="Upload Image" required style={{ marginRight: '10px', padding: '8px' }} />
+        {/* Preview */}
+        <div className="flex gap-2 mt-5 mb-5">
+          {imageUrls.map((url, idx) => (
+            <img key={idx} src={url} alt="preview" width="80" />
+          ))}
+        </div>
         <Button type="submit" style={{ padding: '8px 12px', cursor: 'pointer' }}>{editingService ? 'Update Service' : 'Add Service'}</Button>
         {editingService && <Button type="button" onClick={resetForm} style={{ marginLeft: '10px', padding: '8px 12px', cursor: 'pointer' }}>Cancel</Button>}
       </form>
@@ -134,6 +164,7 @@ const ServiceManagement = () => {
           <CardHeader>
             <CardTitle>{service?.name}</CardTitle>
             <CardDescription>
+              {service?.image}
               {service.description}
             </CardDescription>
           </CardHeader>
@@ -144,12 +175,11 @@ const ServiceManagement = () => {
               {service?.duration} mins
             </p>
             <p>
-              <strong>Price:</strong>${service?.price}
+              <strong>Price:</strong> &#8377;{service?.price}
             </p>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex justify-end gap-1">
             <Button
-              variant="destructive"
               onClick={() => startEditing(service)}
             >
               Edit
