@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card"
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import apiClient from '@/services/apiClient';
 import ENV_CONFIG from '@/config/EnvConfig';
 import axios from 'axios';
 
@@ -67,29 +66,16 @@ const ServiceManagement = () => {
   // Handles the form submission for both creating and updating
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const fd = new FormData();
-    fd.append("name", formData.name);
-    fd.append("description", formData.description);
-    fd.append("duration", formData.duration);
-    fd.append("price", formData.price);
-
-    if (formData.image instanceof File) {
-      // User uploaded a new file
-      fd.append("image", formData.image);
-    } else {
-      // User didn’t change image → send old URL string
-      fd.append("image", formData.image);
-    }
     try {
       if (editingService) {
         // --- UPDATE LOGIC ---
-        const updated = await updateService(editingService._id, fd);
+        const updated = await updateService(editingService._id, formData);
         // Find the index of the old service and replace it with the updated one.
         setServices(services.map((s) => (s._id === updated._id ? updated : s)));
       } else {
         console.log('formData  ====>', fd, "file  ===>",file);
         // --- CREATE LOGIC ---
-        const newService = await createService(fd);
+        const newService = await createService(formData);
         // Add the new service to the top of the list for immediate feedback.
         setServices([newService, ...services]);
       }
