@@ -61,7 +61,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
             <h3 className="scroll-m-20 text-xl font-semibold tracking-tight justify-center align-center items-center flex">
                 Select a Service
             </h3>
-            <div className='services-container' style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className='services-container grid-cols-3'>
                 {services?.map((service) => {
                     return (
                         <Card className="cursor-pointer hover:shadow-lg transition duration-300 hover:bg-zinc-200"

@@ -9,12 +9,11 @@ const {
 } = require('../controllers/service.controller');
 const { protect } = require('../middleware/auth.middleware');
 const { admin } = require('../middleware/admin.middleware');
-const upload = require('../middleware/multer.middleware')
 
 router.route('/')
     .get(getAllServices)
-    .post(protect, admin,upload.single("image"), createService);
-
+    .post(protect, admin, createService);
+3
 router.route('/:id')
     .get(getServiceById)
     .put(protect, admin, updateService)
