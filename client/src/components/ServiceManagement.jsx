@@ -22,11 +22,13 @@ const ServiceManagement = () => {
   const [error, setError] = useState(null);
   const [editingService, setEditingService] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
-  const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '', image: '' });
+  const [formData, setFormData] = useState({ name: '', description: '', duration: '', price: '' });
+  const [imageLoading, setImageLoading] = useState(false);
 
   const handleImageUpload = async (e) => {
     const files = e.target.files;
     const uploadedUrls = [];
+    setImageLoading(true);
 
     for (let i = 0; i < files.length; i++) {
       const formData = new FormData();
@@ -39,6 +41,7 @@ const ServiceManagement = () => {
 
       uploadedUrls.push(res.data.secure_url);
     }
+    setImageLoading(false);
 
     setImageUrls((prev) => [...prev, ...uploadedUrls]);
   };
@@ -67,15 +70,15 @@ const ServiceManagement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const payload = { ...formData, imageUrls };
       if (editingService) {
         // --- UPDATE LOGIC ---
-        const updated = await updateService(editingService._id, formData);
+        const updated = await updateService(editingService._id, payload);
         // Find the index of the old service and replace it with the updated one.
         setServices(services.map((s) => (s._id === updated._id ? updated : s)));
       } else {
-        console.log('formData  ====>', fd, "file  ===>",file);
         // --- CREATE LOGIC ---
-        const newService = await createService(formData);
+        const newService = await createService(payload);
         // Add the new service to the top of the list for immediate feedback.
         setServices([newService, ...services]);
       }
@@ -107,14 +110,15 @@ const ServiceManagement = () => {
       description: service.description,
       duration: service.duration,
       price: service.price,
-      image: service.image
     });
+    setImageUrls(service.imageUrls || []);
   };
 
   // Resets the form and exits "edit mode"
   const resetForm = () => {
     setEditingService(null);
-    setFormData({ name: '', description: '', duration: '', price: '', image: '' });
+    setFormData({ name: '', description: '', duration: '', price: '' });
+    setImageUrls([]);
   };
 
   if (loading) {
@@ -154,45 +158,55 @@ const ServiceManagement = () => {
             <img key={idx} src={url} alt="preview" width="80" />
           ))}
         </div>
-        <Button type="submit" style={{ padding: '8px 12px', cursor: 'pointer' }}>{editingService ? 'Update Service' : 'Add Service'}</Button>
+        <Button type="submit" style={{ padding: '8px 12px', cursor: 'pointer' }} disabled={imageLoading}>{editingService ? 'Update Service' : 'Add Service'}</Button>
         {editingService && <Button type="button" onClick={resetForm} style={{ marginLeft: '10px', padding: '8px 12px', cursor: 'pointer' }}>Cancel</Button>}
       </form>
 
       {/* --- The List of Existing Services --- */}
-      {services?.map((service) => (
-        <Card key={service._id} className='mb-10'>
-          <CardHeader>
-            <CardTitle>{service?.name}</CardTitle>
-            <CardDescription>
-              {service?.image}
-              {service.description}
-            </CardDescription>
-          </CardHeader>
+      <div className='services-container grid-cols-3'>
 
-          <CardContent>
-            <p>
-              <strong>Time:</strong>{" "}
-              {service?.duration} mins
-            </p>
-            <p>
-              <strong>Price:</strong> &#8377;{service?.price}
-            </p>
-          </CardContent>
-          <CardFooter className="flex justify-end gap-1">
-            <Button
-              onClick={() => startEditing(service)}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={() => handleDelete(service._id)}
-            >
-              Delete
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
+        {services?.map((service) => (
+          <Card key={service._id} className='mb-10'>
+            {/* Preview */}
+            <div className="">
+              {service.imageUrls.map((url, idx) => (
+                <img key={idx} src={url} alt="preview" width="80" />
+              ))}
+            </div>
+            <CardHeader>
+              <CardTitle>
+                {service?.name}</CardTitle>
+              <CardDescription>
+                {service.description}
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+              <p>
+                <strong>Time:</strong>{" "}
+                {service?.duration} mins
+              </p>
+              <p>
+                <strong>Price:</strong> &#8377;{service?.price}
+              </p>
+            </CardContent>
+            <CardFooter className="flex justify-end gap-1">
+              <Button
+                onClick={() => startEditing(service)}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => handleDelete(service._id)}
+              >
+                Delete
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
     </div>
   );
 };

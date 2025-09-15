@@ -227,11 +227,6 @@ exports.getAllAppointments = async (req, res) => {
             success: true,
             count: appointments.length,
             data: appointments,
-
-        });
-        res.status(200).json({
-            success: true,
-            message: 'getAllAppointments controller is working. Logic to be implemented.'
         });
     } catch (error) {
         console.error('Error fetching all appointments:', error);
