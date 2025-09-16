@@ -10,6 +10,8 @@ import { isBefore, startOfDay } from 'date-fns';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { createAppointment } from '../services/appointment.service';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useAuth } from '@/context/AuthContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BookingPage = () => {
 
@@ -26,6 +28,9 @@ const BookingPage = () => {
   const [availableConfig, setAvailableConfig] = useState([]);
   const [isConfigLoading, setIsConfigLoading] = useState(false);
   const [configError, setConfigError] = useState(null);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
 
   useEffect(() => {
@@ -123,8 +128,10 @@ const BookingPage = () => {
     }));
   }
 
-  const handleBookingConfirm = async() => {
-
+  const handleBookingConfirm = async () => {
+    if (!user) {
+      return navigate("/login", { state: { from: location }, replace: true });
+    }
       try {
 
         const response = await createAppointment(selection);

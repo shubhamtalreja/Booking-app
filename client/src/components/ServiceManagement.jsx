@@ -14,7 +14,13 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import ENV_CONFIG from '@/config/EnvConfig';
 import axios from 'axios';
-
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 const ServiceManagement = () => {
   const [services, setServices] = useState([]);
@@ -168,11 +174,45 @@ const ServiceManagement = () => {
         {services?.map((service) => (
           <Card key={service._id} className='mb-10'>
             {/* Preview */}
-            <div className="">
-              {service.imageUrls.map((url, idx) => (
-                <img key={idx} src={url} alt="preview" width="80" />
-              ))}
-            </div>
+            <Carousel className="cursor-pointer hover:scale-105 transition-transform duration-300" opts={{
+              align: "start",
+              loop: true,
+            }}>
+              <CarouselContent>
+                {service.imageUrls && service.imageUrls.length > 0 ? (
+                  service.imageUrls.map((image, index) => (
+                    <CarouselItem key={index}>
+                      <div className="flex items-center justify-center w-full h-100 bg-gray-100">
+                        <img
+                          src={image}
+                          alt={`Image ${index + 1}`}
+                          className="object-cover w-full h-100 rounded"
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))
+                ) : (
+                  <CarouselItem>
+                    <div className="flex items-center justify-center w-full h-100 bg-gray-200 text-gray-500">
+                      No Image Available
+                    </div>
+                  </CarouselItem>
+                )}
+              </CarouselContent>
+              {service.imageUrls?.length > 1 && <>
+                <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow-md" />
+                <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow-md" /></>}
+              {/* Dots */}
+              <div className="flex justify-center gap-2 mt-2">
+                {service.imageUrls?.length > 0 &&
+                  service.imageUrls.map((_, i) => (
+                    <span
+                      key={i}
+                      className={"h-2 w-2 rounded-full bg-gray-300"}
+                    />
+                  ))}
+              </div>
+            </Carousel>
             <CardHeader>
               <CardTitle>
                 {service?.name}</CardTitle>
