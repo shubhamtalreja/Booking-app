@@ -32,7 +32,6 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
         const fetchService = async () => {
             try {
                 const response = await getAllServices();
-                console.log('Fetched services:', response);
                 setServices(response);
                 setError(null);
             } catch (err) {

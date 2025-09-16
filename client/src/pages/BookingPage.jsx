@@ -135,14 +135,12 @@ const BookingPage = () => {
       try {
 
         const response = await createAppointment(selection);
-        console.log('Booking response:', response);
         alert('Appointment booked successfully!');
       }catch (error) {
         console.error('Booking failed:', error);
         alert('There was a problem booking your appointment. Please try again.');
         return;
       }
-    console.log('Booking Confirmed!', selection);
 
     setIsModalOpen(false);
   };
