@@ -21,6 +21,8 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import { Button } from './ui/button';
+import Autoplay from "embla-carousel-autoplay";
+
 
 const ServiceList = ({ onServiceSelect, selectedService }) => {
     const [services, setServices] = useState([]);
@@ -67,7 +69,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
     return (
         <div className='flex flex-col gap-4'>
             <h3 className="scroll-m-20 text-xl font-semibold tracking-tight justify-center align-center items-center flex">
-                All Service
+                All Services
             </h3>
             <div className='services-container grid-cols-3'>
                 {services?.map((service) => {
@@ -79,7 +81,12 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                             <Carousel className="cursor-pointer hover:scale-105 transition-transform duration-300" opts={{
                                 align: "start",
                                 loop: true,
-                            }}>
+                            }}
+                                plugins={[
+                                    Autoplay({
+                                        delay: 2000,
+                                    }),
+                                ]}>
                                 <CarouselContent>
                                     {service.imageUrls && service.imageUrls.length > 0 ? (
                                         service.imageUrls.map((image, index) => (
