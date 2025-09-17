@@ -21,6 +21,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import Autoplay from 'embla-carousel-autoplay';
 
 const ServiceManagement = () => {
   const [services, setServices] = useState([]);
@@ -89,6 +90,7 @@ const ServiceManagement = () => {
         setServices([newService, ...services]);
       }
       resetForm();
+      setImageUrls([]);
     } catch (err) {
       setError(err.message || 'An error occurred.');
     }
@@ -177,7 +179,12 @@ const ServiceManagement = () => {
             <Carousel className="cursor-pointer hover:scale-105 transition-transform duration-300" opts={{
               align: "start",
               loop: true,
-            }}>
+            }}
+              plugins={[
+                Autoplay({
+                  delay: 2000,
+                }),
+              ]}>
               <CarouselContent>
                 {service.imageUrls && service.imageUrls.length > 0 ? (
                   service.imageUrls.map((image, index) => (
