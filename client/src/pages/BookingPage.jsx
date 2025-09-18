@@ -12,6 +12,19 @@ import { createAppointment } from '../services/appointment.service';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useAuth } from '@/context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 const BookingPage = () => {
 
@@ -24,7 +37,7 @@ const BookingPage = () => {
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [slotError, setSlotError] = useState(null);
-
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [availableConfig, setAvailableConfig] = useState([]);
   const [isConfigLoading, setIsConfigLoading] = useState(false);
   const [configError, setConfigError] = useState(null);
@@ -119,6 +132,7 @@ const BookingPage = () => {
       time: null
     })
     setAvailableSlots([]);
+    setIsSheetOpen(true);
   }
 
   const handleTimeSelect = (time) => {
@@ -132,20 +146,20 @@ const BookingPage = () => {
     if (!user) {
       return navigate("/login", { state: { from: location }, replace: true });
     }
-      try {
+    try {
 
-        const response = await createAppointment(selection);
-        alert('Appointment booked successfully!');
-      }catch (error) {
-        console.error('Booking failed:', error);
-        alert('There was a problem booking your appointment. Please try again.');
-        return;
-      }
+      const response = await createAppointment(selection);
+      alert('Appointment booked successfully!');
+    } catch (error) {
+      console.error('Booking failed:', error);
+      alert('There was a problem booking your appointment. Please try again.');
+      return;
+    }
 
     setIsModalOpen(false);
   };
 
-  if (isConfigLoading) return <LoadingSpinner/>;
+  if (isConfigLoading) return <LoadingSpinner />;
   if (configError) return <p style={{ color: 'red' }}>{configError}</p>;
   return (
     <div>
@@ -153,85 +167,81 @@ const BookingPage = () => {
         onServiceSelect={handleServiceSelect}
         selectedService={selection.service} />
 
-
-      {selection.service && (
-        <div style={{ marginTop: '20px' }}>
-          <h3>Select a Date for {selection.service.name}</h3>
-          <DayPicker
-            mode="single"
-            selected={selection.date}
-            onSelect={handleDateSelect}
-            disabled={isDayDisabled}
-            footer={selection.date ? `You selected ${selection.date.toLocaleDateString()}.` : 'Please select a day.'}
-          />
-        </div>
-      )}
-      {selection.date && (
-        <div style={{ marginTop: '20px' }}>
-          <h3>Step 3: Select a Time</h3>
-          {loadingSlots && <p>Loading available times...</p>}
-          {slotError && <p style={{ color: 'red' }}>{slotError}</p>}
-
-          {!loadingSlots && !slotError && (
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        <SheetContent className='overflow-auto'>
+          <SheetHeader>
+            {selection.service && (<SheetTitle>Select a Date for {selection.service.name}</SheetTitle>)}
+            {/* <SheetDescription>
+              Make changes to your profile here. Click save when you&apos;re done.
+            </SheetDescription> */}
+          </SheetHeader>
+          {selection.service && (
             <div>
-              {availableSlots.length > 0 ? (
-                availableSlots.map((slot) => {
-                  // Determine if this is the currently selected button.
-                  const isSelected = selection.time === slot;
-
-                  return (
-                    <button
-                      key={slot}
-                      onClick={() => handleTimeSelect(slot)}
-                      style={{
-                        margin: '5px',
-                        padding: '10px 15px',
-                        fontSize: '1em',
-                        cursor: 'pointer',
-                        backgroundColor: isSelected ? '#007bff' : '#f8f9fa',
-                        color: isSelected ? 'white' : 'black',
-                        border: isSelected ? '1px solid #0056b3' : '1px solid #ccc',
-                        borderRadius: '5px',
-                        transition: 'background-color 0.2s, color 0.2s',
-                      }}
-                    >
-                      {slot}
-                    </button>
-                  );
-                })
-              ) : (
-                <p>No available slots for this day. Please select another date.</p>
-              )}
+              <DayPicker
+                mode="single"
+                selected={selection.date}
+                onSelect={handleDateSelect}
+                disabled={isDayDisabled}
+                footer={selection.date ? `You selected ${selection.date.toLocaleDateString()}.` : 'Please select a day.'}
+              />
             </div>
           )}
-        </div>)}
+          {selection.date && (
+            <div>
+              <SheetHeader>
+                Step 3: Select a Time
+              </SheetHeader>
+              {loadingSlots && <p>Loading available times...</p>}
+              {slotError && <p style={{ color: 'red' }}>{slotError}</p>}
 
-      {selection.service && selection.date && selection.time && (
-        <div style={{ marginTop: '30px', textAlign: 'center' }}>
-          <button
-            style={{
-              padding: '12px 25px',
-              fontSize: '1.2em',
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-            }}
-            // Clicking this button opens the confirmation modal.
-            onClick={() => setIsModalOpen(true)}
-          >
-            Book Now
-          </button>
-        </div>
-      )}
+              {!loadingSlots && !slotError && (
+                <div>
+                  {availableSlots.length > 0 ? (
+                    availableSlots.map((slot) => {
+                      // Determine if this is the currently selected button.
+                      const isSelected = selection.time === slot;
 
-      <ConfirmationModal
+                      return (
+                        <button
+                          key={slot}
+                          onClick={() => handleTimeSelect(slot)}
+                          style={{
+                            margin: '5px',
+                            padding: '10px 15px',
+                            fontSize: '1em',
+                            cursor: 'pointer',
+                            backgroundColor: isSelected ? '#007bff' : '#f8f9fa',
+                            color: isSelected ? 'white' : 'black',
+                            border: isSelected ? '1px solid #0056b3' : '1px solid #ccc',
+                            borderRadius: '5px',
+                            transition: 'background-color 0.2s, color 0.2s',
+                          }}
+                        >
+                          {slot}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <p>No available slots for this day. Please select another date.</p>
+                  )}
+                </div>
+              )}
+            </div>)}
+          <SheetFooter>
+            {selection.service && selection.date && selection.time && (
+              <Button type="submit"style={{backgroundColor:'#28a745'}} onClick={() => setIsModalOpen(true)}>Book Now</Button>)}
+            <SheetClose asChild>
+              <Button variant="default">Cancel</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+              <ConfirmationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleBookingConfirm}
         selection={selection}
       />
+      </Sheet>
 
     </div>
   );
