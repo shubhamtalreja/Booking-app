@@ -171,9 +171,6 @@ const BookingPage = () => {
         <SheetContent className='overflow-auto'>
           <SheetHeader>
             {selection.service && (<SheetTitle>Select a Date for {selection.service.name}</SheetTitle>)}
-            {/* <SheetDescription>
-              Make changes to your profile here. Click save when you&apos;re done.
-            </SheetDescription> */}
           </SheetHeader>
           {selection.service && (
             <div>
@@ -198,11 +195,10 @@ const BookingPage = () => {
                 <div>
                   {availableSlots.length > 0 ? (
                     availableSlots.map((slot) => {
-                      // Determine if this is the currently selected button.
                       const isSelected = selection.time === slot;
 
                       return (
-                        <button
+                        <Button
                           key={slot}
                           onClick={() => handleTimeSelect(slot)}
                           style={{
@@ -218,7 +214,7 @@ const BookingPage = () => {
                           }}
                         >
                           {slot}
-                        </button>
+                        </Button>
                       );
                     })
                   ) : (
@@ -229,19 +225,20 @@ const BookingPage = () => {
             </div>)}
           <SheetFooter>
             {selection.service && selection.date && selection.time && (
-              <Button type="submit"style={{backgroundColor:'#28a745'}} onClick={() => setIsModalOpen(true)}>Book Now</Button>)}
+              <Button type="submit" style={{ backgroundColor: '#28a745' }} onClick={() => setIsModalOpen(true)}>Book Now</Button>)}
             <SheetClose asChild>
               <Button variant="default">Cancel</Button>
             </SheetClose>
           </SheetFooter>
         </SheetContent>
-              <ConfirmationModal
+
+      </Sheet>
+      <ConfirmationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleBookingConfirm}
         selection={selection}
       />
-      </Sheet>
 
     </div>
   );
