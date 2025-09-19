@@ -13,17 +13,14 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useAuth } from '@/context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Calendar } from "@/components/ui/calendar"
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet"
 
 const BookingPage = () => {
@@ -169,25 +166,27 @@ const BookingPage = () => {
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetContent className='overflow-auto'>
-          <SheetHeader>
+          <SheetHeader className="flex flex-col items-center justify-center">
             {selection.service && (<SheetTitle>Select a Date for {selection.service.name}</SheetTitle>)}
           </SheetHeader>
           {selection.service && (
-            <div>
-              <DayPicker
+            <div className="flex flex-col items-center justify-center">
+              <Calendar
                 mode="single"
                 selected={selection.date}
                 onSelect={handleDateSelect}
                 disabled={isDayDisabled}
+                className="rounded-md border shadow-sm flex flex-col items-center justify-center gap-12 p-6 "
                 footer={selection.date ? `You selected ${selection.date.toLocaleDateString()}.` : 'Please select a day.'}
+              // captionLayout="dropdown"
               />
             </div>
           )}
           {selection.date && (
-            <div>
-              <SheetHeader>
-                Step 3: Select a Time
-              </SheetHeader>
+            <div className="flex flex-col items-center justify-center p-4 mx-auto">
+              <SheetTitle>
+                Select a Time
+              </SheetTitle>
               {loadingSlots && <p>Loading available times...</p>}
               {slotError && <p style={{ color: 'red' }}>{slotError}</p>}
 
@@ -225,7 +224,7 @@ const BookingPage = () => {
             </div>)}
           <SheetFooter>
             {selection.service && selection.date && selection.time && (
-              <Button type="submit" style={{ backgroundColor: '#28a745' }} onClick={() => setIsModalOpen(true)}>Book Now</Button>)}
+              <Button type="submit" style={{ backgroundColor: '#28a745' }} onClick={() => {setIsModalOpen(true); setIsSheetOpen(false)} }>Book Now</Button>)}
             <SheetClose asChild>
               <Button variant="default">Cancel</Button>
             </SheetClose>
