@@ -135,7 +135,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                             </CardContent>
                             <CardFooter className="flex justify-end gap-1">
                                 <Button
-                                    onClick={() => { onServiceSelect(service); selectedService?._id === service._id ? onServiceSelect(null) : null }}
+                                    onClick={() => { onServiceSelect(service); }}
                                     style={{ backgroundColor: '#28a745' }}
                                 >
                                     Book Service
