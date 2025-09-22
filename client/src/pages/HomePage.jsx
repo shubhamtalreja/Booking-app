@@ -73,7 +73,7 @@ const HomePage = () => {
         className="max-w-3xl text-center px-4"
       >
         <h4 className="scroll-m-20 text-xl md:text-2xl font-semibold tracking-tight">
-          Welcome to <span className="text-primary">TapApt</span> – your one-stop appointment booking solution! Easily schedule your appointments online with just a few clicks. Choose your service, select a convenient time, and confirm your booking instantly.
+          Welcome to <span className="text-primary">TapApt</span> your one-stop appointment booking solution! Easily schedule your appointments online with just a few clicks. Choose your service, select a convenient time, and confirm your booking instantly.
         </h4>
       </motion.div>
 
