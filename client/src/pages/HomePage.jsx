@@ -29,7 +29,7 @@ const HomePage = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-12 p-6 max-w-7xl mx-auto">
       {/* Carousel Section */}
-      <Carousel
+      {/* <Carousel
         className="w-full max-w-6xl h-full"
         opts={{ align: "start", loop: true }}
         plugins={[
@@ -47,23 +47,19 @@ const HomePage = () => {
                 className="h-full w-full cursor-pointer"
                 onClick={() => navigate("/booking")}
               >
-                {/* <Card className="h-full w-full shadow-md">
-                  <CardContent className="flex items-center justify-center p-0 w-full h-full"> */}
                     <img
                       src={image}
                       alt={`Service ${index + 1}`}
                       className="rounded-md object-cover w-full h-full"
                       style={{ maxHeight: "4200px" }}
                     />
-                  {/* </CardContent>
-                </Card> */}
               </motion.div>
             </CarouselItem>
           ))}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
-      </Carousel>
+      </Carousel> */}
 
       {/* Welcome Text */}
       <motion.div

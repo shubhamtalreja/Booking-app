@@ -86,6 +86,7 @@ const RegisterForm = () => {
             placeholder="Enter your email"
             required
           />
+          <button>sendOTP</button>
         </div>
 
         <div className="form-group">
