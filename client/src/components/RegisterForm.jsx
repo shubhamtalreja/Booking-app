@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './Form.css';
-import { register } from '../services/authService';
+import { generateOtp, register } from '../services/authService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { Button } from './ui/button';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -56,6 +57,11 @@ const RegisterForm = () => {
     }
   };
 
+  const handleGenerateOtp = async()=>{
+    const response = await generateOtp(formData);
+    console.log(response);
+  }
+
 
   return (
     <div className="form-container">
@@ -86,7 +92,8 @@ const RegisterForm = () => {
             placeholder="Enter your email"
             required
           />
-          <button>sendOTP</button>
+          {formData.email &&
+          <Button type="button" onClick={handleGenerateOtp}>Send Otp</Button>}
         </div>
 
         <div className="form-group">

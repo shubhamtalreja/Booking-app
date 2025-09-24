@@ -20,3 +20,14 @@ export const login = async (credentials) => {
     throw error.response?.data || new Error('An unknown error occurred during login.');
   }
 };
+
+export const generateOtp = async (userEmail) => {
+  console.log('email',userEmail)
+  try {
+    const response = await apiClient.post('/auth/generateOtp', userEmail);
+    return response.data;
+  } catch (error) {
+    console.error('Login error:', error.response?.data || error.message);
+    throw error.response?.data || new Error('An unknown error occurred during login.');
+  }
+};

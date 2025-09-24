@@ -1,7 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const User = require('../models/user.model');
+const sendEmail = require('../utils/email');
 
 
 const generateJwtToken = (id) => {
@@ -69,8 +71,24 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 })
 
+const generateOtp = asyncHandler(async (req, res) => {
+    console.log(req.body)
+    const {email} = req.body;
+    const randomOtp = crypto.randomInt(100000, 1000000); // Generates a 6-digit OTP
+    const emailOptions = {
+        to: email,
+        subject: `TapApt Email Verification`,
+        // Plain text version for compatibility
+        text: `Your 6 digit Otp is ${randomOtp}, Valid for only 10 minutes`,
+    };
+
+    await sendEmail(emailOptions);
+    res.status(201);
+})
+
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    generateOtp
 }
