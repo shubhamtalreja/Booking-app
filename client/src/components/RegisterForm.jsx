@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './Form.css';
-import { generateOtp, register } from '../services/authService';
+import { register } from '../services/authService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from './ui/button';
+import { generateOtp } from '@/services/otpService';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -57,8 +58,9 @@ const RegisterForm = () => {
     }
   };
 
-  const handleGenerateOtp = async()=>{
-    const response = await generateOtp(formData);
+  const handleGenerateOtp = async () => {
+    const email = formData.email
+    const response = await generateOtp({ email });
     console.log(response);
   }
 

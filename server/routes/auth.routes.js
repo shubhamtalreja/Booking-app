@@ -12,7 +12,4 @@ router.post('/register', registerUser);
 
 router.post('/login', loginUser);
 
-router.post('/generateOtp', generateOtp);
-
-
 module.exports = router;
