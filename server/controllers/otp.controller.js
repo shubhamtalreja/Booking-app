@@ -21,7 +21,8 @@ const generateOtp = asyncHandler(async (req, res) => {
         res.status(201).json({ message: "Otp send to email" });
 
     } else {
-        res.status(401).json({ message: "Unknown error" });
+        res.status(401);
+        throw new Error('Unknown error occur');
     }
 })
 
