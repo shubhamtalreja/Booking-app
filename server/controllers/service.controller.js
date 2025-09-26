@@ -5,7 +5,7 @@ const ErrorResponse = require('../utils/errorResponse');
 // @desc    Create a new service
 // @route   POST /api/services
 // @access  Private/Admin
-const createService = asyncHandler(async (req, res) => {
+const createService = asyncHandler(async (req, res, next) => {
     console.log('create service', req.body);
 
     const { name, description, duration, price, imageUrls } = req.body;
@@ -39,7 +39,7 @@ const getAllServices = asyncHandler(async (req, res) => {
 // @desc    Get a single service by its ID
 // @route   GET /api/services/:id
 // @access  Public
-const getServiceById = asyncHandler(async (req, res) => {
+const getServiceById = asyncHandler(async (req, res, next) => {
 
     const serviceById = await Service.findById(req.params.id);
 
@@ -53,7 +53,7 @@ const getServiceById = asyncHandler(async (req, res) => {
 // @desc    Update an existing service
 // @route   PUT /api/services/:id
 // @access  Private/Admin
-const updateService = asyncHandler(async (req, res) => {
+const updateService = asyncHandler(async (req, res, next) => {
 
     const service = await Service.findById(req.params.id);
 
@@ -71,7 +71,7 @@ const updateService = asyncHandler(async (req, res) => {
 // @desc    Delete a service
 // @route   DELETE /api/services/:id
 // @access  Private/Admin
-const deleteService = asyncHandler(async (req, res) => {
+const deleteService = asyncHandler(async (req, res, next) => {
     const service = await Service.findById(req.params.id);
 
     if (!service) {

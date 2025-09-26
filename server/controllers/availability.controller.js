@@ -22,7 +22,7 @@ const {
  * @route   GET /api/availability?date=YYYY-MM-DD&serviceId=...
  * @access  Public
  */
-exports.getAvailability = asyncHandler( async(req, res) => {
+exports.getAvailability = asyncHandler( async(req, res, next) => {
 
   const SLOT_INTERVAL = 15;
 
