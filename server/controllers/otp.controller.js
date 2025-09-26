@@ -2,10 +2,19 @@ const asyncHandler = require('express-async-handler');
 const crypto = require('crypto');
 const emailOtp = require('../models/otp.model');
 const sendEmail = require('../utils/email');
+const User = require('../models/user.model');
+const ErrorResponse = require('../utils/errorResponse');
 
 
-const generateOtp = asyncHandler(async (req, res) => {
+const generateOtp = asyncHandler(async (req, res, next) => {
     const { email } = req.body;
+
+    const userExist = await User.findOne({ email });
+
+    if (userExist) {
+        return next(new ErrorResponse('User with email already exist', 400))
+    }
+
     const otp = crypto.randomInt(100000, 1000000);
     const emailOptions = {
         to: email,
@@ -21,10 +30,13 @@ const generateOtp = asyncHandler(async (req, res) => {
         res.status(201).json({ message: "Otp send to email" });
 
     } else {
-        res.status(401);
-        throw new Error('Unknown error occur');
+        return next(new ErrorResponse('Otp not sent', 401))
     }
-})
+});
+
+// const validateOtp = () => {
+
+// }
 
 module.exports = {
     generateOtp
