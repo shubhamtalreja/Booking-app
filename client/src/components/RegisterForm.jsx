@@ -4,7 +4,7 @@ import { register } from '../services/authService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from './ui/button';
-import { generateOtp } from '@/services/otpService';
+import { generateOtp, validateOtp } from '@/services/otpService';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +18,7 @@ const RegisterForm = () => {
   const { login } = useAuth();
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [otp, setOtp] = useState();
+  const [submitButton, setSubmitButton] = useState(false);
 
   const [errors, setErrors] = useState({});
 
@@ -63,16 +64,29 @@ const RegisterForm = () => {
   const handleGenerateOtp = async () => {
     const email = formData.email
     const response = await generateOtp({ email });
-    response.message && setShowOtpInput(true);
+    if (response.message) {
+      setShowOtpInput(true);
+    } else {
+      setShowOtpInput(false);
+    }
     console.log(response);
   }
 
-  const handleOtpChange =(e)=>{
-     setOtp(e.target.value);
+  const handleOtpChange = (e) => {
+    setOtp(e.target.value);
   }
 
-  const handleValidateOtp = () => {
-    console.log('validate otp');
+  const handleValidateOtp = async () => {
+    const otpCreds = {
+      email: formData.email,
+      otp: otp
+    }
+    const verifyResponse = await validateOtp(otpCreds);
+    if (verifyResponse.message) {
+      setSubmitButton(true);
+    } else {
+      setSubmitButton(false);
+    }
   }
 
 
@@ -108,7 +122,7 @@ const RegisterForm = () => {
           {formData.email &&
             <Button type="button" onClick={handleGenerateOtp}>Send Otp</Button>}
         </div>
-        { showOtpInput && <div className="form-group">
+        {showOtpInput && <div className="form-group">
           <label htmlFor="otp">Otp</label>
           <input
             type="otp"
@@ -138,7 +152,7 @@ const RegisterForm = () => {
           {errors.password && <p className="error-text">{errors.password}</p>}
         </div>
 
-        <button type="submit" className="submit-btn">
+        <button type="submit" className="submit-btn" disabled={!submitButton}>
           Register
         </button>
       </form>

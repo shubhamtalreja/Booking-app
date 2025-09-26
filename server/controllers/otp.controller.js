@@ -30,14 +30,21 @@ const generateOtp = asyncHandler(async (req, res, next) => {
         res.status(201).json({ message: "Otp send to email" });
 
     } else {
-        return next(new ErrorResponse('Otp not sent', 401))
+        return next(new ErrorResponse('Otp not sent', 400))
     }
 });
 
-// const validateOtp = () => {
-
-// }
+const validateOtp = asyncHandler(async (req, res, next) => {
+    const { email, otp } = req.body;
+    const getOtp = await emailOtp.findOne({ email, otp });
+    if (getOtp) {
+        res.status(200).json({ message: "Email verified" });
+    } else {
+        return next(new ErrorResponse('Wrong otp', 400));
+    }
+});
 
 module.exports = {
-    generateOtp
+    generateOtp,
+    validateOtp
 }
