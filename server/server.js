@@ -10,7 +10,7 @@ const availabilityRoutes = require('./routes/availability.routes');
 const appointmentRoutes = require('./routes/appointment.routes');
 const startScheduler = require('./scheduler');
 const errorHandler = require('./middleware/error.middleware');
-
+const otpRoutes = require('./routes/otp.routes');
 dbConnection();
 const PORT = process.env.PORT || 5000;
 const corsOptions = {
@@ -31,6 +31,7 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/otp', otpRoutes);
 startScheduler();
 app.use(errorHandler);
 

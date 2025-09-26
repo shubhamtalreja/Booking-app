@@ -3,6 +3,8 @@ import './Form.css';
 import { register } from '../services/authService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { Button } from './ui/button';
+import { generateOtp } from '@/services/otpService';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +16,9 @@ const RegisterForm = () => {
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
   const { login } = useAuth();
-  
+  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [otp, setOtp] = useState();
+
   const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
@@ -39,15 +43,15 @@ const RegisterForm = () => {
       setErrors(validationErrors);
       return;
     }
-    
+
     setErrors({});
 
     try {
       const data = await register(formData);
-      
+
       console.log('Registration successful!', data);
       login(data);
-      
+
       alert('Registration successful! You can now log in.');
       navigate(from, { replace: true });
     } catch (error) {
@@ -55,6 +59,21 @@ const RegisterForm = () => {
       setErrors({ api: error.message || 'An unexpected error occurred.' });
     }
   };
+
+  const handleGenerateOtp = async () => {
+    const email = formData.email
+    const response = await generateOtp({ email });
+    response.message && setShowOtpInput(true);
+    console.log(response);
+  }
+
+  const handleOtpChange =(e)=>{
+     setOtp(e.target.value);
+  }
+
+  const handleValidateOtp = () => {
+    console.log('validate otp');
+  }
 
 
   return (
@@ -86,7 +105,24 @@ const RegisterForm = () => {
             placeholder="Enter your email"
             required
           />
+          {formData.email &&
+            <Button type="button" onClick={handleGenerateOtp}>Send Otp</Button>}
         </div>
+        { showOtpInput && <div className="form-group">
+          <label htmlFor="otp">Otp</label>
+          <input
+            type="otp"
+            id="otp"
+            name="otp"
+            value={otp}
+            onChange={handleOtpChange}
+            maxLength={6}
+            placeholder="Enter Otp"
+            required
+          />
+          {otp &&
+            <Button type="button" onClick={handleValidateOtp}>Verify</Button>}
+        </div>}
 
         <div className="form-group">
           <label htmlFor="password">Password</label>

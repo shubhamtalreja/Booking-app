@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
-
 const User = require('../models/user.model');
 
 
@@ -72,5 +71,5 @@ const loginUser = asyncHandler(async (req, res) => {
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
 }
