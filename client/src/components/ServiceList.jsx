@@ -60,21 +60,21 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
           >
             {/* Left: info */}
             <div className="flex-1 pr-4">
-              {service.isBestseller && (
+              {/* {service.isBestseller && (
                 <div className="text-green-700 text-xs font-bold mb-1">
                   BESTSELLER IN DELHI NCR
                 </div>
-              )}
+              )} */}
               <div className="font-bold text-lg">{service.name}</div>
               <div className="text-gray-700 text-sm mb-2">{service.description}</div>
               <div className="flex gap-6 text-base font-medium">
                 <span>₹{service.price}</span>
                 <span>{service.duration} mins</span>
-                {service.rating && (
+                {/* {service.rating && (
                   <span className="text-purple-700">
                     ★ {service.rating} ({service.reviews})
                   </span>
-                )}
+                )} */}
               </div>
             </div>
             {/* Right: image + button */}
