@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const ErrorResponse = require('../utils/errorResponse');
 
 
 const generateJwtToken = (id) => {
@@ -12,15 +13,14 @@ const generateJwtToken = (id) => {
 //@desc Register a new user
 //@route POST /api/auth/register
 //@access Public
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res, next) => {
 
     const { name, email, password } = req.body;
 
     const userExist = await User.findOne({ email });
 
     if (userExist) {
-        res.status(400);
-        throw new Error('User with email already exist')
+        return next(new ErrorResponse('User with email already exist', 400));
     }
 
     const user = await User.create({
@@ -39,8 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
         })
     } else {
-        res.status(400);
-        throw new Error('Invalid user data');
+        return next(new ErrorResponse('Invalid user data', 400));
     }
 
 
@@ -49,7 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
 //@desc Register a new user
 //@route POST /api/auth/login
 //@access Public
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email })
@@ -63,8 +62,7 @@ const loginUser = asyncHandler(async (req, res) => {
             token: generateJwtToken(user._id),
         });
     } else {
-        res.status(401);
-        throw new Error('Invalid email or password');
+        return next(new ErrorResponse('Invalid email or password', 401));
     }
 })
 
