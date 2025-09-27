@@ -76,6 +76,14 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                   </span>
                 )} */}
               </div>
+              <Button
+                className="cursor-pointer p-0"
+                variant='link'
+                style={{color: "#4810efff"}}
+                // onClick={() => onServiceSelect(service)}
+              >
+                View Details
+              </Button>
             </div>
             {/* Right: image + button */}
             <div className="flex flex-col items-center ml-4">
@@ -85,6 +93,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                 className="w-20 h-20 object-cover rounded-lg mb-2"
               />
               <Button
+                className="cursor-pointer"
                 style={{ backgroundColor: "#28a745", color: "#fff" }}
                 onClick={() => onServiceSelect(service)}
               >
