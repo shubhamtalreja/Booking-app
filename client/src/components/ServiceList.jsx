@@ -52,7 +52,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
       <h3 className="text-xl font-semibold flex justify-center items-center">
         All Services
       </h3>
-      <div className='flex flex-col gap-4'>
+      <div className='services-container grid-cols-3'>
         {services?.map((service) => (
           <div
             key={service._id}
