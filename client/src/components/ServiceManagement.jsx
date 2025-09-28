@@ -174,72 +174,49 @@ const ServiceManagement = () => {
       <div className='services-container grid-cols-3'>
 
         {services?.map((service) => (
-          <Card key={service._id} className='mb-10'>
-            {/* Preview */}
-            <Carousel className="cursor-pointer hover:scale-105 transition-transform duration-300" opts={{
-              align: "start",
-              loop: true,
-            }}
-              plugins={[
-                Autoplay({
-                  delay: 2000,
-                }),
-              ]}>
-              <CarouselContent>
-                {service.imageUrls && service.imageUrls.length > 0 ? (
-                  service.imageUrls.map((image, index) => (
-                    <CarouselItem key={index}>
-                      <div className="flex items-center justify-center w-full h-100 bg-gray-100">
-                        <img
-                          src={image}
-                          alt={`Image ${index + 1}`}
-                          className="object-cover w-full h-100 rounded"
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))
-                ) : (
-                  <CarouselItem>
-                    <div className="flex items-center justify-center w-full h-100 bg-gray-200 text-gray-500">
-                      No Image Available
-                    </div>
-                  </CarouselItem>
-                )}
-              </CarouselContent>
-              {service.imageUrls?.length > 1 && <>
-                <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow-md" />
-                <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow-md" /></>}
-              {/* Dots */}
-              <div className="flex justify-center gap-2 mt-2">
-                {service.imageUrls?.length > 0 &&
-                  service.imageUrls.map((_, i) => (
-                    <span
-                      key={i}
-                      className={"h-2 w-2 rounded-full bg-gray-300"}
-                    />
-                  ))}
+          <div
+            key={service._id}
+            className="flex justify-between items-center bg-white rounded-md shadow p-4 border hover:shadow-lg transition"
+          // style={{ border: selectedService?._id === service._id ? '2px solid #28282bff' : '1px solid #e0e0e0' }}
+          >
+            {/* Left: info */}
+            <div className="flex-1 pr-4">
+              {/* {service.isBestseller && (
+                        <div className="text-green-700 text-xs font-bold mb-1">
+                          BESTSELLER IN DELHI NCR
+                        </div>
+                      )} */}
+              <div className="font-bold text-lg">{service.name}</div>
+              <div className="text-gray-700 text-sm mb-2">{service.description}</div>
+              <div className="flex gap-6 text-base font-medium">
+                <span>₹{service.price}</span>
+                <span>{service.duration} mins</span>
+                {/* {service.rating && (
+                          <span className="text-purple-700">
+                            ★ {service.rating} ({service.reviews})
+                          </span>
+                        )} */}
               </div>
-            </Carousel>
-            <CardHeader>
-              <CardTitle>
-                {service?.name}</CardTitle>
-              <CardDescription>
-                {service.description}
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent>
-              <p>
-                <strong>Time:</strong>{" "}
-                {service?.duration} mins
-              </p>
-              <p>
-                <strong>Price:</strong> &#8377;{service?.price}
-              </p>
-            </CardContent>
-            <CardFooter className="flex justify-end gap-1">
+              <Button
+                className="cursor-pointer p-0"
+                variant='link'
+                style={{ color: "#4810efff" }}
+              // onClick={() => onServiceSelect(service)}
+              >
+                View Details
+              </Button>
+            </div>
+            {/* Right: image + button */}
+            <div className="flex flex-col items-center ml-4">
+              <img
+                src={service.imageUrls?.[0] || '/default_service.png'}
+                alt={service.name}
+                className="w-20 h-20 object-cover rounded-lg mb-2"
+              />
+              <div>
               <Button
                 onClick={() => startEditing(service)}
+                variant="default"
               >
                 Edit
               </Button>
@@ -249,8 +226,9 @@ const ServiceManagement = () => {
               >
                 Delete
               </Button>
-            </CardFooter>
-          </Card>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
 
