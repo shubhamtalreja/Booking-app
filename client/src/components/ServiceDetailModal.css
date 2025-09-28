@@ -1,0 +1,86 @@
+.modal-overlay {
+  position: fixed; /* Stays in place even if the page is scrolled */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+  display: flex; /* Use flexbox to center the modal content */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensures it's on top of other content */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* We add a class when the modal is open to make it visible */
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* The main modal content box */
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 450px; /* Ensures it doesn't get too wide on large screens */
+  text-align: left;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.modal-body p {
+  margin: 10px 0;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+.modal-body strong {
+  color: #333;
+}
+
+.modal-footer {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  margin-top: 20px;
+  text-align: right; /* Aligns buttons to the right */
+}
+
+.modal-footer button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.2s;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+.btn-confirm {
+  background-color: #007bff;
+  color: white;
+}
+.btn-confirm:hover {
+  background-color: #0056b3;
+}

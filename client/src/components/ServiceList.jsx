@@ -4,6 +4,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './ServiceList.css';
 import { Button } from './ui/button';
+import ServiceDetailModal from './ServiceDetailModal';
 
 const ServiceList = ({ onServiceSelect, selectedService }) => {
   const [services, setServices] = useState([]);
@@ -80,7 +81,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                 className="cursor-pointer p-0"
                 variant='link'
                 style={{color: "#4810efff"}}
-                // onClick={() => onServiceSelect(service)}
+                onClick={() => onServiceSelect(service)}
               >
                 View Details
               </Button>
@@ -103,6 +104,8 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
           </div>
         ))}
       </div>
+      <ServiceDetailModal
+      />
     </div>
   );
 };
