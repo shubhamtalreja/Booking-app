@@ -10,6 +10,8 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchService = async () => {
@@ -81,7 +83,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                 className="cursor-pointer p-0"
                 variant='link'
                 style={{color: "#4810efff"}}
-                onClick={() => onServiceSelect(service)}
+                onClick={() => setIsOpen(true)}
               >
                 View Details
               </Button>
@@ -101,11 +103,17 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                 Book Service
               </Button>
             </div>
+            <ServiceDetailModal
+              isOpen={isOpen}
+              onClose={setIsOpen}
+              selection={service}
+
+            />
           </div>
+
         ))}
       </div>
-      <ServiceDetailModal
-      />
+
     </div>
   );
 };
