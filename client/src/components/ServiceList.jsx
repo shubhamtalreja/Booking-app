@@ -4,11 +4,14 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import './ServiceList.css';
 import { Button } from './ui/button';
+import ServiceDetailModal from './ServiceDetailModal';
 
 const ServiceList = ({ onServiceSelect, selectedService }) => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchService = async () => {
@@ -51,7 +54,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
       <h3 className="text-xl font-semibold flex justify-center items-center">
         All Services
       </h3>
-      <div className='flex flex-col gap-4'>
+      <div className='services-container grid-cols-3'>
         {services?.map((service) => (
           <div
             key={service._id}
@@ -80,7 +83,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                 className="cursor-pointer p-0"
                 variant='link'
                 style={{color: "#4810efff"}}
-                // onClick={() => onServiceSelect(service)}
+                onClick={() => setIsOpen(true)}
               >
                 View Details
               </Button>
@@ -100,9 +103,17 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                 Book Service
               </Button>
             </div>
+            <ServiceDetailModal
+              isOpen={isOpen}
+              onClose={setIsOpen}
+              selection={service}
+
+            />
           </div>
+
         ))}
       </div>
+
     </div>
   );
 };
