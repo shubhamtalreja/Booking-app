@@ -17,7 +17,7 @@ if (!isOpen || !selection) {
         </div>
         <div className="modal-body">
           <p>
-            You are about to book the following appointment:
+            <strong>Description:</strong> {selection.description}
           </p>
           <p>
             <strong>Service:</strong> {selection.name}
