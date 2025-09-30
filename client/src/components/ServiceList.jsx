@@ -11,6 +11,7 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [serviceDetails, setServiceDetails] = useState();
 
 
   useEffect(() => {
@@ -82,8 +83,8 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
               <Button
                 className="cursor-pointer p-0"
                 variant='link'
-                style={{color: "#4810efff"}}
-                onClick={() => setIsOpen(true)}
+                style={{ color: "#4810efff" }}
+                onClick={() => { setServiceDetails(service); setIsOpen(true) }}
               >
                 View Details
               </Button>
@@ -103,15 +104,16 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
                 Book Service
               </Button>
             </div>
-            <ServiceDetailModal
-              isOpen={isOpen}
-              onClose={setIsOpen}
-              selection={service}
 
-            />
           </div>
 
         ))}
+        <ServiceDetailModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          selection={serviceDetails}
+
+        />
       </div>
 
     </div>
