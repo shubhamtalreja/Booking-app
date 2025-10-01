@@ -127,7 +127,8 @@ const HomePage = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="text-center hover:shadow-xl transition-shadow duration-300 cursor-default">
+                <Card className="text-center hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+                onClick={() => navigate("/booking")}>
                   <CardHeader>
                     <div className="flex justify-center">{service.icon}</div>
                     <CardTitle>{service.title}</CardTitle>
