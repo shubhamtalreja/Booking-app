@@ -91,72 +91,103 @@ const RegisterForm = () => {
 
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit} className="auth-form">
-        <h2>Create Your Account</h2>
-        {errors.api && <p className="error-text">{errors.api}</p>}
-        <div className="form-group">
-          <label htmlFor="name">Full Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter your full name"
-            required
-          />
-        </div>
+<div className="flex justify-center items-center py-10 px-4">
+  <form
+    onSubmit={handleSubmit}
+    className="bg-white shadow-md rounded-lg p-8 w-full max-w-md flex flex-col gap-6"
+  >
+    <h2 className="text-2xl font-semibold text-center">Create Your Account</h2>
+    {errors.api && <p className="text-red-600 text-sm text-center">{errors.api}</p>}
 
-        <div className="form-group">
-          <label htmlFor="email">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            required
-          />
-          {formData.email &&
-            <Button type="button" onClick={handleGenerateOtp}>Send Otp</Button>}
-        </div>
-        {showOtpInput && <div className="form-group">
-          <label htmlFor="otp">Otp</label>
-          <input
-            type="otp"
-            id="otp"
-            name="otp"
-            value={otp}
-            onChange={handleOtpChange}
-            maxLength={6}
-            placeholder="Enter Otp"
-            required
-          />
-          {otp &&
-            <Button type="button" onClick={handleValidateOtp}>Verify</Button>}
-        </div>}
-
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Create a password"
-            required
-          />
-          {errors.password && <p className="error-text">{errors.password}</p>}
-        </div>
-
-        <button type="submit" className="submit-btn" disabled={!submitButton}>
-          Register
-        </button>
-      </form>
+    {/* Full Name */}
+    <div className="flex flex-col gap-2">
+      <label htmlFor="name" className="text-sm font-medium">Full Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Enter your full name"
+        required
+        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+      />
     </div>
+
+    {/* Email + Send OTP */}
+    <div className="flex flex-col gap-2">
+      <label htmlFor="email" className="text-sm font-medium">Email Address</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="Enter your email"
+        required
+        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+      />
+      {formData.email && (
+        <div className="flex justify-end">
+          <Button type="button" onClick={handleGenerateOtp} className="mt-1">
+            Send OTP
+          </Button>
+        </div>
+      )}
+    </div>
+
+    {/* OTP + Verify */}
+    {showOtpInput && (
+      <div className="flex flex-col gap-2">
+        <label htmlFor="otp" className="text-sm font-medium">OTP</label>
+        <input
+          type="text"
+          id="otp"
+          name="otp"
+          value={otp}
+          onChange={handleOtpChange}
+          maxLength={6}
+          placeholder="Enter OTP"
+          required
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+        />
+        {otp && (
+          <div className="flex justify-end">
+            <Button type="button" onClick={handleValidateOtp} className="mt-1">
+              Verify
+            </Button>
+          </div>
+        )}
+      </div>
+    )}
+
+    {/* Password */}
+    <div className="flex flex-col gap-2">
+      <label htmlFor="password" className="text-sm font-medium">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        placeholder="Create a password"
+        required
+        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+      />
+      {errors.password && <p className="text-red-600 text-sm">{errors.password}</p>}
+    </div>
+
+    {/* Submit */}
+    <Button
+      type="submit"
+      disabled={!submitButton}
+      className="w-full bg-slate-700 hover:bg-slate-800 text-white font-semibold py-2 rounded-md"
+    >
+      Register
+    </Button>
+  </form>
+</div>
+
   );
 };
 
