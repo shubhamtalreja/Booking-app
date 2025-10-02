@@ -17,7 +17,7 @@ const ServiceDetailModal = ({ isOpen, onClose, selection }) => {
 
   return (
     <div className={`modal-overlay ${isOpen ? 'open' : ''}`} onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content overflow-auto  max-h-[500px]" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3>Service Details</h3>
         </div>
