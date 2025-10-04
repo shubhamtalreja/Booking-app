@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from './ui/button';
 
 const Getlocation = ({ onLocation, onSelectLocation }) => {
   const [location, setLocation] = useState(null);
@@ -27,14 +28,14 @@ const Getlocation = ({ onLocation, onSelectLocation }) => {
 
   return (
     <div>
-      <button onClick={handleGetLocation}>Get My Location</button>
+      <Button onClick={handleGetLocation}>Get My Location</Button>
       {location && (
         <div>
           <p>Latitude: {location.lat}</p>
           <p>Longitude: {location.lng}</p>
-          <button onClick={handleSelectLocation}>
+          {/* <Button onClick={handleSelectLocation}>
             {selected ? 'Location Selected' : 'Select Location'}
-          </button>
+          </Button> */}
         </div>
       )}
     </div>

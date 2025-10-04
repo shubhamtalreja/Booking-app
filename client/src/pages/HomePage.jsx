@@ -19,18 +19,11 @@ import Autoplay from "embla-carousel-autoplay";
 import salon from "../assets/Mens.png";
 import medical from "../assets/Healthcare.jpg";
 import spa from "../assets/spa-body.png";
-import Getlocation from "@/components/GetLocation";
 
-// Add more images if needed
 
 const HomePage = () => {
   const serviceImages = [salon, medical,spa]; // Add more images here
   const navigate = useNavigate();
-  const [getLocation, setGetLocation] = useState(null);
-
-  const handleLocation = (location) =>{
-    setGetLocation(location)
-  }
 
   return (
     <div className="flex flex-col items-center justify-center gap-12 p-6 max-w-7xl mx-auto">
@@ -84,8 +77,6 @@ const HomePage = () => {
         <Button size="lg" asChild>
           <Link to="/booking">Book Now</Link>
         </Button>
-        <Getlocation
-        onLocation={handleLocation}/>
       </motion.div>
 
       {/* Services Section */}
