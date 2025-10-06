@@ -5,6 +5,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import './ServiceList.css';
 import { Button } from './ui/button';
 import ServiceDetailModal from './ServiceDetailModal';
+import Getlocation from './GetLocation';
 
 const ServiceList = ({ onServiceSelect, selectedService }) => {
   const [services, setServices] = useState([]);
@@ -12,6 +13,11 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [serviceDetails, setServiceDetails] = useState();
+  const [getLocation, setGetLocation] = useState(null);
+
+  const handleLocation = (location) => {
+    setGetLocation(location)
+  }
 
 
   useEffect(() => {
@@ -53,7 +59,9 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
   return (
     <div className='flex flex-col gap-4'>
       <h3 className="text-xl font-semibold flex justify-center items-center">
-        All Services
+        All Services &nbsp;
+        <Getlocation
+          onLocation={handleLocation} />
       </h3>
       <div className='services-container grid-cols-3'>
         {services?.map((service) => (

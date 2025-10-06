@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -20,7 +20,6 @@ import salon from "../assets/Mens.png";
 import medical from "../assets/Healthcare.jpg";
 import spa from "../assets/spa-body.png";
 
-// Add more images if needed
 
 const HomePage = () => {
   const serviceImages = [salon, medical,spa]; // Add more images here
