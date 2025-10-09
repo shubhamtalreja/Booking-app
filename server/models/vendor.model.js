@@ -19,6 +19,10 @@ const vendorSchema = new mongoose.Schema({
         required: [true, 'Vendor address is required'],
         maxlength: [100, 'Vendor address cannot be more than 100 characters.']
     },
+    category:{
+        type: String,
+        required: true
+    },
     imageUrls: {
         type: [String],
     },
