@@ -6,7 +6,6 @@ const ErrorResponse = require('../utils/errorResponse');
 // @route   POST /api/services
 // @access  Private/Admin
 const createService = asyncHandler(async (req, res, next) => {
-    console.log('create service', req.body);
 
     const { name, description, duration, price, imageUrls } = req.body;
 

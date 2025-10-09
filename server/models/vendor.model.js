@@ -14,7 +14,7 @@ const vendorSchema = new mongoose.Schema({
         trim: true,
         maxlength: [500, 'Vendor description cannot be more than 500 characters.']
     },
-    Address: {
+    address: {
         type: Number,
         required: [true, 'Vendor address is required'],
         maxlength: [100, 'Vendor address cannot be more than 100 characters.']
