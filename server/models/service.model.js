@@ -25,7 +25,7 @@ const serviceSchema = new mongoose.Schema({
     price: {
         type: String,
         required: [true, 'Service price is required'],
-        min: [0, 'Price cannot be negative.'], // The price can be 0 (for a free service) but not less.
+        min: [0, 'Price cannot be negative.'],
     },
     imageUrls: {
         type: [String],
