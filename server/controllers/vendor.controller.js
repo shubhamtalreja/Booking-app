@@ -15,7 +15,7 @@ const createVendor = asyncHandler(async (req, res) => {
 
     }
 
-    const vendor = new Vendor.create({
+    const vendor = await Vendor.create({
         name,
         description,
         address,
@@ -26,6 +26,14 @@ const createVendor = asyncHandler(async (req, res) => {
     res.status(201).json({ vendor });
 });
 
-module.exports={
-    createVendor
+const getAllVendors = asyncHandler(async () => {
+
+    const allVendors = await Vendor.find({});
+
+    res.status(200).json({ allVendors });
+});
+
+module.exports = {
+    createVendor,
+    getAllVendors
 }
