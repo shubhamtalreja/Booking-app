@@ -1,4 +1,4 @@
-import VendorRegistorForm from '@/components/VendorRegistorForm'
+import VendorRegistorForm from '../components/VendorRegistorForm'
 import React from 'react'
 
 const VendorRegisterPage = () => {
