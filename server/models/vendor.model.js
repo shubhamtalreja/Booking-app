@@ -23,6 +23,14 @@ const vendorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    city:{
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: [true, 'Vendor phone number is required'],
+    },
     imageUrls: {
         type: [String],
     },
