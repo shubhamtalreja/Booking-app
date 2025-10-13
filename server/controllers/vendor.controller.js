@@ -8,11 +8,10 @@ const ErrorResponse = require('../utils/errorResponse');
 // @route   POST /api/vendors
 // @access  Private/Admin
 const createVendor = asyncHandler(async (req, res) => {
-    const { name, description, address, category, imageUrls } = req.body;
+    const { name, description, address, category, city, phone, imageUrls } = req.body;
 
-    if (!name || !description || !address || !category) {
-        return next(new ErrorResponse(`Please provide all required fields: name, description, address, and category.`, 404))
-
+    if (!name || !description || !address || !category || !city || !phone) {
+        return next(new ErrorResponse(`Please provide all required fields: name, description, address, category, city, and phone.`, 404))
     }
 
     const vendor = await Vendor.create({
@@ -20,6 +19,8 @@ const createVendor = asyncHandler(async (req, res) => {
         description,
         address,
         category,
+        city,
+        phone,
         imageUrls: imageUrls || []
     })
 
