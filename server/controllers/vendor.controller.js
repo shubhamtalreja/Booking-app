@@ -8,20 +8,28 @@ const ErrorResponse = require('../utils/errorResponse');
 // @route   POST /api/vendors
 // @access  Private/Admin
 const createVendor = asyncHandler(async (req, res) => {
-    const { name, description, address, category, city, phone, imageUrls } = req.body;
+    const { name, description, email, password, address, category, city, phone, imageUrls } = req.body;
 
-    if (!name || !description || !address || !category || !city || !phone) {
-        return next(new ErrorResponse(`Please provide all required fields: name, description, address, category, city, and phone.`, 404))
+    if (!name || !description || !address || !category || !city || !phone || !password || !email) {
+        return next(new ErrorResponse(`Please provide all required fields.`, 404))
+    }
+
+    const vendorExist = await Vendor.findOne({ email })
+
+    if (vendorExist) {
+        return next(new ErrorResponse('Vendor with email already exist', 400));
     }
 
     const vendor = await Vendor.create({
         name,
+        email,
         description,
         address,
         category,
         city,
         phone,
-        imageUrls: imageUrls || []
+        imageUrls: imageUrls || [],
+        password
     })
 
     res.status(201).json({ vendor });
