@@ -167,6 +167,51 @@ const VendorRegisterForm = () => {
       </div>
     )}
 
+    {/* Description */}
+    <div className="flex flex-col gap-2">
+      <label htmlFor="description" className="text-sm font-medium">Description</label>
+      <input
+        type="text"
+        id="description"
+        name="description"
+        value={formData.description}
+        onChange={handleChange}
+        placeholder="Enter a brief description"
+        required
+        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+      />
+    </div>
+    
+    {/* Address */}
+    <div className="flex flex-col gap-2">
+      <label htmlFor="address" className="text-sm font-medium">Address</label>
+      <input
+        type="text"
+        id="address"
+        name="address"
+        value={formData.address}
+        onChange={handleChange}
+        placeholder="Enter your address"
+        required
+        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+      />
+    </div>
+
+    {/* Category */}
+    <div className="flex flex-col gap-2">
+      <label htmlFor="category" className="text-sm font-medium">Category</label>
+      <input
+        type="text"
+        id="category"
+        name="category"
+        value={formData.category}
+        onChange={handleChange}
+        placeholder="Enter your full name"
+        required
+        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+      />
+    </div>
+
     {/* Password */}
     <div className="flex flex-col gap-2">
       <label htmlFor="password" className="text-sm font-medium">Password</label>

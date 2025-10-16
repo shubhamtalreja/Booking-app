@@ -10,6 +10,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import ClientDashboardPage from './pages/ClientDashboardPage';
 import AdminRoute from './components/AdminRoute';
+import VendorRegisterPage from './pages/VendorRegisterPage';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
+          <Route path='/vendor/register' element={<VendorRegisterPage />} />
           <Route path='/booking' element={<BookingPage />} />
           <Route path='/dashboard' element={
             <ProtectedRoute>
