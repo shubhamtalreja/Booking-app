@@ -73,9 +73,19 @@ const LoginForm = () => {
           />
         </div>
 
+        {/* Submit */}
         <Button type="submit" className="w-full bg-slate-700 hover:bg-slate-800 text-white font-semibold py-2 rounded-md">
           Login
         </Button>
+
+        {/* SignUp */}
+        <div className='flex justify-center items-center'>
+          Dont't have a acoount?
+          <Button variant='link' className='cursor-pointer text-blue' onClick={() => navigate('/register')}>
+            SignUp
+          </Button>
+        </div>
+
       </form>
     </div>
   );
