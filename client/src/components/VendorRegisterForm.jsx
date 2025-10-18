@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './Form.css';
-import { register } from '../services/authService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from './ui/button';
 import { generateOtp, validateOtp } from '@/services/otpService';
+import { registerVendor } from '@/services/vendorService';
 
 const VendorRegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -61,7 +61,7 @@ const VendorRegisterForm = () => {
     setErrors({});
 
     try {
-      const data = await register(formData);
+      const data = await registerVendor(formData);
 
       console.log('Registration successful!', data);
       login(data);
