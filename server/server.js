@@ -33,7 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/otp', otpRoutes);
-app.use('/api/vendors',vendorRoutes)
+app.use('/api/vendor',vendorRoutes)
 startScheduler();
 app.use(errorHandler);
 

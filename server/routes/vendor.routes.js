@@ -7,8 +7,8 @@ const {
 const { protect } = require('../middleware/auth.middleware');
 const { admin } = require('../middleware/admin.middleware');
 
-router.route('/')
-    .get(getAllVendors)
-    .post(protect, admin, createVendor);
+router.post('/register',protect, admin, createVendor);
+router.get('/',getAllVendors);
+    
 
 module.exports = router

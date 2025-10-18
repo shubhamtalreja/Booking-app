@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import './Form.css';
-import { register } from '../services/authService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from './ui/button';
 import { generateOtp, validateOtp } from '@/services/otpService';
+import { registerVendor } from '@/services/vendorService';
 
-const RegisterForm = () => {
+const VendorRegisterForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
+    description: '',
+    address: '',
+    category: '',
+    city: '',
+    phone: '',
+    imageUrls: []
   });
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -19,6 +25,13 @@ const RegisterForm = () => {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [otp, setOtp] = useState();
   const [submitButton, setSubmitButton] = useState(false);
+  const vendorCategories =[
+    {name:'Doctor Clinic', value: 'doctor'},
+    {name:'Salon', value: 'salon'},
+    {name:'Spa', value: 'spa'},
+    {name:'Medical Lab', value: 'lab'},
+
+  ]
 
   const [errors, setErrors] = useState({});
 
@@ -48,7 +61,7 @@ const RegisterForm = () => {
     setErrors({});
 
     try {
-      const data = await register(formData);
+      const data = await registerVendor(formData);
 
       console.log('Registration successful!', data);
       login(data);
@@ -161,6 +174,79 @@ const RegisterForm = () => {
           </div>
         )}
 
+        {/* Description */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="description" className="text-sm font-medium">Description</label>
+          <textarea
+            type="text"
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Enter a brief description"
+            maxLength={1000}
+            required
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+          />
+        </div>
+
+        {/* Address */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="address" className="text-sm font-medium">Address</label>
+          <textarea
+            type="text"
+            id="address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            placeholder="Enter your address"
+            maxLength={200}
+            required
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+          />
+        </div>
+
+        {/* Category */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="category" className="text-sm font-medium">Category</label>
+          <select value={formData.category} onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}>
+            {vendorCategories.map((item) => {
+              return (
+                <option key={item.value} value={item.value}>{item.name}</option>
+              )
+            })}
+          </select>
+        </div>
+
+        {/* City */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="category" className="text-sm font-medium">City</label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            placeholder="Enter city"
+            required
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+          />
+        </div>
+
+         <div className="flex flex-col gap-2">
+          <label htmlFor="phone" className="text-sm font-medium">Phone</label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Phone no."
+            required
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
+          />
+        </div>
+
         {/* Password */}
         <div className="flex flex-col gap-2">
           <label htmlFor="password" className="text-sm font-medium">Password</label>
@@ -186,10 +272,10 @@ const RegisterForm = () => {
           Register
         </Button>
 
-        {/* Vendor Register */}
+        {/* User Register */}
         <div className='flex justify-center items-center'>
-          Want to register as a vendor?
-          <Button variant='link' className='cursor-pointer text-blue' onClick={() => navigate('/vendor/register')}>
+          Want to register as a user?
+          <Button variant='link' className='cursor-pointer text-blue' onClick={() => navigate('/register')}>
             Register
           </Button>
         </div>
@@ -199,4 +285,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default VendorRegisterForm;
