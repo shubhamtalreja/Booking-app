@@ -9,6 +9,14 @@ Tap Appointment is a full-stack **appointment booking app** where clients can bo
 - Select date & time and book an appointment.
 - View **upcoming** and **past** appointments.
 - User authentication (**Login / Register**).
+- Register as a vendor (vendors can provide business details and list services).
+
+### Pages (new)
+- Home: Marketing and service carousel (images used for services).
+- Booking: Select service, date and time to create an appointment.
+- Login: User sign-in page.
+- Register (User): Create a client account.
+- Register (Vendor): Create a vendor account with additional fields (phone, address, city, category).
 
 ### Admin
 - View and manage all client appointments.
@@ -30,6 +38,45 @@ Tap Appointment is a full-stack **appointment booking app** where clients can bo
 root
 ├── client # Frontend (Vite + React)
 └── server # Backend (Node.js + Express + Mongoose)
+
+
+### Home Section
+![Home](src/assets/Home.png)
+
+### Services Section
+![Services](src/assets/booking.PNG)
+
+### Booking Section
+![Booking](src/assets/calender.PNG)
+
+### Login Section
+![Login](src/assets/login.PNG)
+
+### User Register Section
+![User Register](src/assets/register.PNG)
+
+### Vendor Register Section
+![Vendor Register](src/assets/vendor.PNG)
+
+
+## Run locally (Windows PowerShell)
+From project root open two terminals: one for server and one for client.
+
+Server (backend):
+```powershell
+cd server
+npm install
+npm run dev
+```
+
+Client (frontend):
+```powershell
+cd client
+npm install
+npm run dev
+```
+
+Make sure your `.env` for the server is configured with `MONGO_URI`, `JWT_SECRET`, and any other required variables.
 
 
 
