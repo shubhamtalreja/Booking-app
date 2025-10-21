@@ -41,22 +41,22 @@ root
 
 
 ### Home Section
-![Home](src/assets/Home.png)
+![Home](client/src/assets/Home.png)
 
 ### Services Section
-![Services](src/assets/booking.PNG)
+![Services](client/src/assets/booking.PNG)
 
 ### Booking Section
-![Booking](src/assets/calender.PNG)
+![Booking](client/src/assets/calender.PNG)
 
 ### Login Section
-![Login](src/assets/login.PNG)
+![Login](client/src/assets/login.PNG)
 
 ### User Register Section
-![User Register](src/assets/register.PNG)
+![User Register](client/src/assets/register.PNG)
 
 ### Vendor Register Section
-![Vendor Register](src/assets/vendor.PNG)
+![Vendor Register](client/src/assets/vendor.PNG)
 
 
 ## Run locally (Windows PowerShell)
