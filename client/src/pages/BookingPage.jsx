@@ -22,6 +22,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
+import VendorList from '@/components/VendorList';
 
 const BookingPage = () => {
 
@@ -163,6 +164,8 @@ const BookingPage = () => {
       <ServiceList
         onServiceSelect={handleServiceSelect}
         selectedService={selection.service} />
+
+      <VendorList/>
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetContent className='overflow-auto'>
