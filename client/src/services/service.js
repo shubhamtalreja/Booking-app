@@ -12,7 +12,6 @@ export const getAllServices = async () => {
 
 }
 export const createService = async (serviceData) => {
-    console.log('data ===>', serviceData)
     try {
         const response = await apiClient.post('/services', serviceData);
 

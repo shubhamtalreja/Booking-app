@@ -6,7 +6,6 @@ const ErrorResponse = require('../utils/errorResponse');
 
 // @desc    Create a new vendor
 // @route   POST /api/vendors
-// @access  Private/Admin
 const createVendor = asyncHandler(async (req, res) => {
     const { name, description, email, password, address, category, city, phone, imageUrls } = req.body;
 
@@ -35,7 +34,7 @@ const createVendor = asyncHandler(async (req, res) => {
     res.status(201).json({ vendor });
 });
 
-const getAllVendors = asyncHandler(async () => {
+const getAllVendors = asyncHandler(async (req,res) => {
 
     const allVendors = await Vendor.find({});
 
