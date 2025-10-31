@@ -29,15 +29,6 @@ const Getlocation = ({ onLocation, onSelectLocation }) => {
   return (
     <div>
       <Button onClick={handleGetLocation}>Get My Location</Button>
-      {/* {location && (
-        <div>
-          <p>Latitude: {location.lat}</p>
-          <p>Longitude: {location.lng}</p>
-          <Button onClick={handleSelectLocation}>
-            {selected ? 'Location Selected' : 'Select Location'}
-          </Button>
-        </div>
-      )} */}
     </div>
   );
 };

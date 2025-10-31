@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { Button } from './ui/button';
 import { getAllVendors } from '@/services/vendorService';
 
 const VendorList = () => {

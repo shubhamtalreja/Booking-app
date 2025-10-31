@@ -4,8 +4,6 @@ const {
     createVendor,
     getAllVendors,
 } = require('../controllers/vendor.controller');
-const { protect } = require('../middleware/auth.middleware');
-const { admin } = require('../middleware/admin.middleware');
 
 router.post('/register', createVendor);
 router.get('/',getAllVendors);
