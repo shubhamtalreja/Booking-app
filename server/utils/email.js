@@ -1,26 +1,27 @@
-const sgMail = require('@sendgrid/mail');
+const nodemailer = require('nodemailer');
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 const sendEmail = async (options) => {
-  const msg = {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
     to: options.to,
-    from: process.env.SENDGRID_FROM_EMAIL,
     subject: options.subject,
     text: options.text,
     html: options.html,
   };
 
   try {
-    await sgMail.send(msg);
+    await transporter.sendMail(mailOptions);
     console.log(`Email successfully sent to ${options.to}`);
   } catch (error) {
     console.error('Error sending email:', error);
-
-    if (error.response) {
-      console.error(error.response.body);
-    }
-    
     throw new Error('Email could not be sent.');
   }
 };
