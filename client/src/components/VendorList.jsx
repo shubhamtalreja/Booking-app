@@ -55,7 +55,7 @@ const VendorList = () => {
         {vendors?.map((vendor) => (
           <div
             key={vendor._id}
-            className="flex justify-between items-center bg-white rounded-md shadow p-4 border hover:shadow-lg transition"
+            className="flex justify-between items-center bg-white rounded-md shadow p-4 border hover:shadow-lg transition cursor-pointer"
             // style={{ border: selectedService?._id === service._id ? '2px solid #28282bff' : '1px solid #e0e0e0' }}
           >
             {/* Left: info */}
