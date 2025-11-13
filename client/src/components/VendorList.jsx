@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getAllVendors } from '@/services/vendorService';
+import { Button } from './ui/button';
 
 const VendorList = () => {
   const [vendors, setVendors] = useState([]);
@@ -56,7 +57,7 @@ const VendorList = () => {
           <div
             key={vendor._id}
             className="flex justify-between items-center bg-white rounded-md shadow p-4 border hover:shadow-lg transition cursor-pointer"
-            // style={{ border: selectedService?._id === service._id ? '2px solid #28282bff' : '1px solid #e0e0e0' }}
+            style={{ border: '1px solid #e0e0e0' }}
           >
             {/* Left: info */}
             <div className="flex-1 pr-4">
@@ -87,20 +88,20 @@ const VendorList = () => {
               </Button> */}
             </div>
             {/* Right: image + button */}
-            {/* <div className="flex flex-col items-center ml-4">
+            <div className="flex flex-col items-center ml-4">
               <img
-                src={service.imageUrls?.[0] || '/default_service.png'}
-                alt={service.name}
+                src={vendor.imageUrls?.[0] || '/default_service.png'}
+                alt={vendor.name}
                 className="w-20 h-20 object-cover rounded-lg mb-2"
               />
               <Button
                 className="cursor-pointer"
                 style={{ backgroundColor: "#28a745", color: "#fff" }}
-                onClick={() => onServiceSelect(service)}
+                // onClick={() => onServiceSelect(service)}
               >
                 Book Service
               </Button>
-            </div> */}
+            </div>
 
           </div>
 
