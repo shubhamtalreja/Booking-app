@@ -78,14 +78,14 @@ const VendorList = () => {
                   </span>
                 )} */}
               </div>
-              {/* <Button
+              <Button
                 className="cursor-pointer p-0"
                 variant='link'
                 style={{ color: "#4810efff" }}
-                onClick={() => { setServiceDetails(service); setIsOpen(true) }}
+                // onClick={() => { setServiceDetails(service); setIsOpen(true) }}
               >
                 View Details
-              </Button> */}
+              </Button>
             </div>
             {/* Right: image + button */}
             <div className="flex flex-col items-center ml-4">
@@ -99,7 +99,7 @@ const VendorList = () => {
                 style={{ backgroundColor: "#28a745", color: "#fff" }}
                 // onClick={() => onServiceSelect(service)}
               >
-                Book Service
+                Services
               </Button>
             </div>
 
