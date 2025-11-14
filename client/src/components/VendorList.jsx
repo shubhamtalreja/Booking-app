@@ -8,6 +8,8 @@ const VendorList = () => {
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [vendorDetails, setVendorDetails] = useState(null);
 
 
 
@@ -69,8 +71,8 @@ const VendorList = () => {
               <div className="font-bold text-lg">{vendor.name}</div>
               <div className="text-gray-700 text-sm mb-2">{vendor.description}</div>
               <div className="flex gap-6 text-base font-medium">
-                <span>{vendor.address}</span>
-                <span>{vendor.city} </span>
+                {/* <span>{vendor.address}</span>
+                <span>{vendor.city} </span> */}
                 <span>{vendor.category} </span>
                 {/* {service.rating && (
                   <span className="text-purple-700">
@@ -82,7 +84,7 @@ const VendorList = () => {
                 className="cursor-pointer p-0"
                 variant='link'
                 style={{ color: "#4810efff" }}
-                // onClick={() => { setServiceDetails(service); setIsOpen(true) }}
+                onClick={() => { setVendorDetails(vendor); setIsOpen(!isOpen) }}
               >
                 View Details
               </Button>
@@ -112,6 +114,57 @@ const VendorList = () => {
           selection={serviceDetails}
 
         /> */}
+        {isOpen &&
+        <div
+            key={vendorDetails._id}
+            className="flex justify-between items-center bg-white rounded-md shadow p-4 border hover:shadow-lg transition cursor-pointer"
+            style={{ border: '1px solid #e0e0e0' }}
+          >
+            {/* Left: info */}
+            <div className="flex-1 pr-4">
+              {/* {service.isBestseller && (
+                <div className="text-green-700 text-xs font-bold mb-1">
+                  BESTSELLER IN DELHI NCR
+                </div>
+              )} */}
+              <div className="font-bold text-lg">{vendorDetails.name}</div>
+              <div className="text-gray-700 text-sm mb-2">{vendorDetails.description}</div>
+              <div className="flex gap-6 text-base font-medium">
+                {/* <span>{vendor.address}</span>
+                <span>{vendor.city} </span> */}
+                <span>{vendorDetails.category} </span>
+                {/* {service.rating && (
+                  <span className="text-purple-700">
+                    ★ {service.rating} ({service.reviews})
+                  </span>
+                )} */}
+              </div>
+              {/* <Button
+                className="cursor-pointer p-0"
+                variant='link'
+                style={{ color: "#4810efff" }}
+                onClick={() => { setVendorDetails(vendor); setIsOpen(true) }}
+              >
+                View Details
+              </Button> */}
+            </div>
+            {/* Right: image + button */}
+            <div className="flex flex-col items-center ml-4">
+              <img
+                src={vendorDetails.imageUrls?.[0] || '/default_service.png'}
+                alt={vendorDetails.name}
+                className="w-20 h-20 object-cover rounded-lg mb-2"
+              />
+              <Button
+                className="cursor-pointer"
+                style={{ backgroundColor: "#28a745", color: "#fff" }}
+                // onClick={() => onServiceSelect(service)}
+              >
+                Services
+              </Button>
+            </div>
+
+          </div>}
       </div>
 
     </div>
