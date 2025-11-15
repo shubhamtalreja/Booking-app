@@ -102,7 +102,7 @@ const VendorList = () => {
               <Button
                 className="cursor-pointer"
                 style={{ backgroundColor: "#28a745", color: "#fff" }}
-                // onClick={() => onServiceSelect(service)}
+              // onClick={() => onServiceSelect(service)}
               >
                 Services
               </Button>
@@ -114,72 +114,72 @@ const VendorList = () => {
 
       </div>
 
-              {isOpen && vendorDetails &&
-      <div className="modal-content overflow-auto  max-h-[500px]">
-        <div className="modal-header">
-          <h3>Vendor Details</h3>
-        </div>
+      {isOpen && vendorDetails &&
+        <div className="modal-content overflow-auto  max-h-[500px]">
+          <div className="modal-header">
+            <h3>Vendor Details</h3>
+          </div>
 
-        <div className="modal-body">
-          <Card className="p-4 flex flex-col items-center">
-            {/* Image centered */}
-            <Carousel
-              className="w-full max-w-sm mb-4"
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              plugins={[
-                Autoplay({
-                  delay: 2000,
-                }),
-              ]}
-            >
-              <CarouselContent>
-                {vendorDetails.imageUrls && vendorDetails.imageUrls.length > 0 ? (
-                  vendorDetails.imageUrls.map((image, index) => (
-                    <CarouselItem key={index}>
-                      <div className="flex items-center justify-center w-full h-64 bg-gray-100 rounded">
-                        <img
-                          src={image}
-                          alt={`Image ${index + 1}`}
-                          className="object-cover w-full h-full rounded"
-                        />
+          <div className="modal-body">
+            <Card className="p-4 flex flex-col items-center">
+              {/* Image centered */}
+              <Carousel
+                className="w-full max-w-sm mb-4"
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                plugins={[
+                  Autoplay({
+                    delay: 2000,
+                  }),
+                ]}
+              >
+                <CarouselContent>
+                  {vendorDetails.imageUrls && vendorDetails.imageUrls.length > 0 ? (
+                    vendorDetails.imageUrls.map((image, index) => (
+                      <CarouselItem key={index}>
+                        <div className="flex items-center justify-center w-full h-64 bg-gray-100 rounded">
+                          <img
+                            src={image}
+                            alt={`Image ${index + 1}`}
+                            className="object-cover w-full h-full rounded"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))
+                  ) : (
+                    <CarouselItem>
+                      <div className="flex items-center justify-center w-full h-64 bg-gray-200 text-gray-500">
+                        No Image Available
                       </div>
                     </CarouselItem>
-                  ))
-                ) : (
-                  <CarouselItem>
-                    <div className="flex items-center justify-center w-full h-64 bg-gray-200 text-gray-500">
-                      No Image Available
-                    </div>
-                  </CarouselItem>
-                )}
-              </CarouselContent>
-               {vendorDetails.imageUrls?.length > 0 && <>
-                <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow-md" />
-                <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow-md" /></>}
-            </Carousel>
+                  )}
+                </CarouselContent>
+                {vendorDetails.imageUrls?.length > 0 && <>
+                  <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow-md" />
+                  <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow-md" /></>}
+              </Carousel>
 
-            {/* Text aligned left under image */}
-            <div className="w-full text-left space-y-2">
-              <p><strong>Description:</strong> {vendorDetails.description}</p>
-              <p><strong>Name:</strong> {vendorDetails.name}</p>
-              <p><strong>Address:</strong> {vendorDetails.address}</p>
-              <p><strong>City:</strong> {vendorDetails.city}</p>
-              <p><strong>Address:</strong> {vendorDetails.address}</p>
-              <p><strong>Rating:</strong> &#9733;&#9733;&#9733;&#9733;&#9734;</p>
-            </div>
-          </Card>
-        </div>
+              {/* Text aligned left under image */}
+              <div className="w-full text-left space-y-2">
+                <p><strong>Category:</strong> {vendorDetails.category}</p>
+                <p><strong>Description:</strong> {vendorDetails.description}</p>
+                <p><strong>Name:</strong> {vendorDetails.name}</p>
+                <p><strong>Address:</strong> {vendorDetails.address}</p>
+                <p><strong>City:</strong> {vendorDetails.city}</p>
+                <p><strong>Rating:</strong> &#9733;&#9733;&#9733;&#9733;&#9734;</p>
+              </div>
+            </Card>
+          </div>
 
-        <div className="modal-footer">
-          <Button className="btn-cancel" onClick={() => setIsOpen(false)}>
-            Close
-          </Button>
+          <div className="modal-footer">
+            <Button className="btn-cancel" onClick={() => setIsOpen(false)}>
+              Close
+            </Button>
+          </div>
         </div>
-      </div>
-          }
+      }
 
     </div>
   );
