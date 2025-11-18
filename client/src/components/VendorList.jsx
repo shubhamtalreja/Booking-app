@@ -73,24 +73,21 @@ const VendorList = () => {
               )} */}
               <div className="font-bold text-lg">{vendor.name}</div>
               <div className="text-gray-700 text-sm mb-2">{vendor.description}</div>
+              <div className="text-gray-900 text-sm mb-2">{vendor.category}</div>
               <div className="flex gap-6 text-base font-medium">
-                {/* <span>{vendor.address}</span>
-                <span>{vendor.city} </span> */}
-                <span>{vendor.category} </span>
-                {/* {service.rating && (
-                  <span className="text-purple-700">
-                    ★ {service.rating} ({service.reviews})
-                  </span>
-                )} */}
+                <span>{vendor.city} </span> 
               </div>
-              <Button
+              {/* <Button
                 className="cursor-pointer p-0"
                 variant='link'
                 style={{ color: "#4810efff" }}
                 onClick={() => { setVendorDetails(vendor); setIsOpen(!isOpen) }}
               >
                 View Details
-              </Button>
+              </Button> */}
+              <span className="text-purple-700">
+                    ★★★★☆
+                  </span>
             </div>
             {/* Right: image + button */}
             <div className="flex flex-col items-center ml-4">
