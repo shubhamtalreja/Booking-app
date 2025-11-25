@@ -44,3 +44,14 @@ export const deleteService = async (id) => {
     }
 
 }
+export const getVendorServices = async (id) => {
+    try {
+        const response = await apiClient.get(`/services/vendor/${id}`);
+
+        return response.data.data;
+    } catch (error) {
+        console.error('Error getting vendor service:', error.response ? error.response.data : error.message);
+        throw new Error(error.response?.data?.message || 'Failed to get vendor service.');
+    }
+
+}

@@ -85,10 +85,29 @@ const deleteService = asyncHandler(async (req, res, next) => {
     res.status(200).json({ message: 'Service deleted successfully', id: req.params.id });
 })
 
+
+// @desc    Get a single service by its ID
+// @route   GET /api/services/vendor/:id
+// @access  Public
+const getServicesByVendorId = asyncHandler(async (req, res, next) => {
+
+    const vendorId = req.params.id;
+
+    const services = await Service.find({ vendor: vendorId });
+    console.log(services);
+
+    if (!services || services.length === 0) {
+        return next(new ErrorResponse(`No services found for vendor ID ${vendorId}`, 404));
+    }
+
+    res.status(200).json({ services });
+})
+
 module.exports = {
     createService,
     getAllServices,
     getServiceById,
     updateService,
-    deleteService
+    deleteService,
+    getServicesByVendorId
 }

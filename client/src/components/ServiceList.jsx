@@ -7,9 +7,9 @@ import { Button } from './ui/button';
 import ServiceDetailModal from './ServiceDetailModal';
 import Getlocation from './GetLocation';
 
-const ServiceList = ({ onServiceSelect, selectedService }) => {
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
+const ServiceList = ({ services }) => {
+  // const [services, setServices] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [serviceDetails, setServiceDetails] = useState();
@@ -20,37 +20,37 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
   }
 
 
-  useEffect(() => {
-    const fetchService = async () => {
-      try {
-        const response = await getAllServices();
-        setServices(response);
-        setError(null);
-      } catch (err) {
-        setError('Failed to load services. Please try again later.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchService();
-  }, []);
+  // useEffect(() => {
+  //   const fetchService = async () => {
+  //     try {
+  //       const response = await getAllServices();
+  //       setServices(response);
+  //       setError(null);
+  //     } catch (err) {
+  //       setError('Failed to load services. Please try again later.');
+  //       console.error(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   fetchService();
+  // }, []);
 
-  if (loading) {
-    return (
-      <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
-        <h2><Skeleton width={200} /></h2>
-        <div className="appointment-card-skeleton">
-          <h3><Skeleton width={`80%`} /></h3>
-          <p><Skeleton count={2} /></p>
-        </div>
-        <div className="appointment-card-skeleton">
-          <h3><Skeleton width={`60%`} /></h3>
-          <p><Skeleton count={2} /></p>
-        </div>
-      </SkeletonTheme>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
+  //       <h2><Skeleton width={200} /></h2>
+  //       <div className="appointment-card-skeleton">
+  //         <h3><Skeleton width={`80%`} /></h3>
+  //         <p><Skeleton count={2} /></p>
+  //       </div>
+  //       <div className="appointment-card-skeleton">
+  //         <h3><Skeleton width={`60%`} /></h3>
+  //         <p><Skeleton count={2} /></p>
+  //       </div>
+  //     </SkeletonTheme>
+  //   );
+  // }
 
   if (error) {
     return <div style={{ color: 'red' }}>{error}</div>;
@@ -58,11 +58,12 @@ const ServiceList = ({ onServiceSelect, selectedService }) => {
 
   return (
     <div className='flex flex-col gap-4'>
+      { services.length > 0  &&
       <h3 className="text-xl font-semibold flex justify-center items-center">
         All Services &nbsp;
         <Getlocation
           onLocation={handleLocation} />
-      </h3>
+      </h3>}
       <div className='services-container grid-cols-3'>
         {services?.map((service) => (
           <div

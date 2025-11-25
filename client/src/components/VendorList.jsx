@@ -6,6 +6,8 @@ import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import { getVendorServices } from '@/services/service';
+import ServiceList from './ServiceList';
 
 const VendorList = () => {
   const [vendors, setVendors] = useState([]);
@@ -13,6 +15,7 @@ const VendorList = () => {
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [vendorDetails, setVendorDetails] = useState(null);
+  const [services, setServices] = useState([]);
 
 
 
@@ -31,6 +34,19 @@ const VendorList = () => {
     }
     fetchService();
   }, []);
+
+  const fetchVendorServices = async (id) => {
+    try {
+      const response = await getVendorServices(id);
+      setServices(response.services);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load services. Please try again later.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -99,7 +115,7 @@ const VendorList = () => {
               <Button
                 className="cursor-pointer"
                 style={{ backgroundColor: "#28a745", color: "#fff" }}
-              // onClick={() => onServiceSelect(service)}
+                onClick={() =>fetchVendorServices(vendor._id) }
               >
                 Services
               </Button>
@@ -110,6 +126,9 @@ const VendorList = () => {
         ))}
 
       </div>
+      <ServiceList
+        services={services} /> 
+
 
       {isOpen && vendorDetails &&
         <div className="modal-content overflow-auto  max-h-[500px]">
