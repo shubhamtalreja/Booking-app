@@ -165,7 +165,7 @@ const BookingPage = () => {
         onServiceSelect={handleServiceSelect}
         selectedService={selection.service} />
 
-      <VendorList/>
+      {/* <VendorList/> */}
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetContent className='overflow-auto'>
