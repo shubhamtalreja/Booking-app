@@ -2,7 +2,7 @@ name: Keep Render Server Awake
 
 on:
   schedule:
-    - cron: '*/15 * * * *'   # every 15 minutes
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
   workflow_dispatch:        # allows manual run
 
 jobs:
