@@ -161,9 +161,9 @@ const BookingPage = () => {
   if (configError) return <p style={{ color: 'red' }}>{configError}</p>;
   return (
     <div>
-      <ServiceList
+      {/* <ServiceList
         onServiceSelect={handleServiceSelect}
-        selectedService={selection.service} />
+        selectedService={selection.service} /> */}
 
       {/* <VendorList/> */}
 

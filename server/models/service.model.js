@@ -30,6 +30,11 @@ const serviceSchema = new mongoose.Schema({
     imageUrls: {
         type: [String],
     },
+    vendor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vendor',
+        required: true,
+    },
 },
     {
         timestamps: true

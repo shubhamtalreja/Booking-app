@@ -8,6 +8,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const createService = asyncHandler(async (req, res, next) => {
 
     const { name, description, duration, price, imageUrls } = req.body;
+    const vendorId = req.user.id;
 
     if (!name || !description || !duration || !price) {
         return next(new ErrorResponse(`Please provide all required fields: name, description, duration, and price.`, 404))
@@ -20,6 +21,7 @@ const createService = asyncHandler(async (req, res, next) => {
         duration,
         price,
         imageUrls: imageUrls || [],
+        vendorId,
     })
 
     res.status(201).json({ service });
@@ -83,10 +85,29 @@ const deleteService = asyncHandler(async (req, res, next) => {
     res.status(200).json({ message: 'Service deleted successfully', id: req.params.id });
 })
 
+
+// @desc    Get a single service by its ID
+// @route   GET /api/services/vendor/:id
+// @access  Public
+const getServicesByVendorId = asyncHandler(async (req, res, next) => {
+
+    const vendorId = req.params.id;
+
+    const services = await Service.find({ vendor: vendorId });
+    console.log(services);
+
+    if (!services || services.length === 0) {
+        return next(new ErrorResponse(`No services found for vendor ID ${vendorId}`, 404));
+    }
+
+    res.status(200).json({ services });
+})
+
 module.exports = {
     createService,
     getAllServices,
     getServiceById,
     updateService,
-    deleteService
+    deleteService,
+    getServicesByVendorId
 }

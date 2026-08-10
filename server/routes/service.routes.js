@@ -5,7 +5,8 @@ const {
     getAllServices,
     getServiceById,
     updateService,
-    deleteService
+    deleteService,
+    getServicesByVendorId
 } = require('../controllers/service.controller');
 const { protect } = require('../middleware/auth.middleware');
 const { admin } = require('../middleware/admin.middleware');
@@ -18,5 +19,8 @@ router.route('/:id')
     .get(getServiceById)
     .put(protect, admin, updateService)
     .delete(protect, admin, deleteService);
+
+router.route('/vendor/:id')
+    .get(getServicesByVendorId);
 
 module.exports = router
